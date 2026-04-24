@@ -1,0 +1,1 @@
+This project is a design of the frontend of Lorenta-Tech.
