@@ -12,6 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary.tsx';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Logout from './pages/Logout.tsx';
 import Footer from './components/Footer.tsx';
+import { CartProvider } from './contexts/CartContext.tsx';
 
 
 function App() {
@@ -21,18 +22,19 @@ function App() {
     {
       path: "/",
       element: (
-        <>
+        <CartProvider>
           <Navbar />
           <div className="px-5 py-4">
             <Outlet />
           </div>
           <Footer/>
-        </>
+        </CartProvider>
       ),
       errorElement: <ErrorBoundary />,
       children: [
         { index: true, element: <Home /> },
         { path: "login", element: <Login /> },
+        { path: "logout", element: <Logout/>},
 
         // Protected group
         {
@@ -43,7 +45,6 @@ function App() {
             { path: "checkout", element: <Checkout /> },
             { path: "history", element: <History /> },
             { path: "order/:id", element: <Order /> },
-            { path: "logout", element: <Logout/>}
           ],
         },
       ],
