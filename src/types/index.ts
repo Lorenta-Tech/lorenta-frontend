@@ -3,7 +3,8 @@ export interface UploadedFile {
   name: string;
   type: string;
   size: number;
-  selected: boolean;
+  content: File;
+  pages?: number
 }
 
 export interface DocumentConfig {
@@ -12,19 +13,9 @@ export interface DocumentConfig {
   name: string;
   range: string;
   copies: number;
+  pagesPerSide: number;
   isColor: boolean;
-}
-
-export interface CartItem extends DocumentConfig {
-  price: number;
-}
-
-export type OrderStatus = 'idle' | 'paid' | 'confirmed' | 'success';
-
-export interface Order {
-  otp: string;
-  printerId: string;
-  status: OrderStatus;
+  duplex: boolean
 }
 
 export interface AppState {
@@ -33,7 +24,6 @@ export interface AppState {
   files: UploadedFile[];
   selectedDocuments: DocumentConfig[];
   cartTotal: number;
-  order: Order;
 }
 
 export interface UserInfo {
