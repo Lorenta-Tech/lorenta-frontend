@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { UploadedFile } from "../types";
 import { Document, Page, pdfjs } from "react-pdf";
+import TextViewer from "./TextViewer";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -43,6 +44,7 @@ const ViewModal: React.FC<Props> = ({ file, onClose, convertedPdfUrl }) => {
   const pdfSource = convertedPdfUrl || localFileUrl;
 
   const renderContent = () => {
+    //pdf view
     if (isPdf && pdfSource) {
       return (
         <Document
@@ -76,6 +78,7 @@ const ViewModal: React.FC<Props> = ({ file, onClose, convertedPdfUrl }) => {
       );
     }
 
+    //image view
     if (file.type.startsWith("image/") && localFileUrl) {
       return (
         <img
@@ -85,6 +88,14 @@ const ViewModal: React.FC<Props> = ({ file, onClose, convertedPdfUrl }) => {
         />
       );
     }
+
+    //txt files viewer
+    if (file.type === "text/plain" && file.content) {
+      return <TextViewer file={file.content} />;
+    }
+
+    //doc and ppt viewer
+    // looking for it...
 
     return <div className="p-6 text-gray-500 text-center">Unsupported file</div>;
   };

@@ -15,6 +15,9 @@ function Login() {
         <FcGoogle/>Continue with Google
       </button>
       <p className="underline my-3"><Link to="/">Go to home</Link></p>
+
+      {/* fake log toggle  */}
+      <Link to="/logout">Fake login</Link>
     </form>
   </div>
   );
