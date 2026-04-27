@@ -10,7 +10,6 @@ import { useCart } from "../contexts/CartContext";
 const Upload: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
   const {
     files,
     dragActive,
@@ -45,7 +44,7 @@ const Upload: React.FC = () => {
         <FileList files={files} onRemove={removeFile} />
       </div>
 
-      <Button className="rounded-3xl" onClick={handleUpload}>
+      <Button className="rounded-3xl text-lg" onClick={handleUpload}>
         Upload files
       </Button>
     </div>

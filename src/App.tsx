@@ -34,12 +34,12 @@ function App() {
       children: [
         { index: true, element: <Home /> },
         { path: "login", element: <Login /> },
-        { path: "logout", element: <Logout/>},
 
         // Protected group
         {
           element: <ProtectedRoute />,
           children: [
+            { path: "logout", element: <Logout/>},
             { path: "upload", element: <Upload /> },
             { path: "cart", element: <Cart /> },
             { path: "checkout", element: <Checkout /> },

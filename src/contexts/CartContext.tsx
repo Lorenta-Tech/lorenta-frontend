@@ -1,96 +1,126 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { DocumentConfig, UploadedFile } from "../types";
 
+type CartItem = {
+  file: UploadedFile;
+  config: DocumentConfig;
+};
+
 interface CartContextType {
   uploadedFiles: UploadedFile[];
   configs: DocumentConfig[];
+  items: CartItem[];
   addToCart: (newFiles: UploadedFile[]) => void;
   updateConfig: (updated: DocumentConfig) => void;
   removeConfig: (configId: string) => void;
   applyToAll: (source: DocumentConfig) => void;
-  updateFilePages: (fileId: string, pages: number) => void;
+  updateFilePages: (configId: string, pages: number) => void;
   clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-  const [configs, setConfigs] = useState<DocumentConfig[]>([]);
+  const [items, setItems] = useState<CartItem[]>([]);
 
   const addToCart = (newFiles: UploadedFile[]) => {
-    setUploadedFiles((prev) => [...prev, ...newFiles]);
+    setItems((prev) => {
+      const existing = new Set(
+        prev.map((i) => `${i.file.name}-${i.file.size}`)
+      );
 
-    const newConfigs = newFiles.map((file) => ({
-      id: crypto.randomUUID(),
-      fileId: file.id,
-      name: file.name,
-      range: "",
-      copies: 1,
-      pagesPerSide: 1,
-      isColor: false,
-      duplex: false,
-    }));
+      const seen = new Set<string>();
 
-    setConfigs((prev) => [...prev, ...newConfigs]);
+      const newItems: CartItem[] = newFiles
+        .filter((f) => {
+          const key = `${f.name}-${f.size}`;
+          if (existing.has(key) || seen.has(key)) return false;
+          seen.add(key);
+          return true;
+        })
+        .map((file) => ({
+          file,
+          config: {
+            id: crypto.randomUUID(),
+            name: file.name,
+            range: "",
+            copies: 1,
+            pagesPerSide: 1,
+            isColor: false,
+            duplex: false,
+          },
+        }));
+
+      return [...prev, ...newItems];
+    });
   };
 
   const updateConfig = (updated: DocumentConfig) => {
-    setConfigs((prev) => prev.map((c) => (c.id === updated.id ? updated : c)));
+    setItems((prev) =>
+      prev.map((item) =>
+        item.config.id === updated.id
+          ? { ...item, config: updated }
+          : item
+      )
+    );
   };
 
-  const updateFilePages = (fileId: string, pages: number) => {
-    setUploadedFiles((prev) =>
-      prev.map((file) => {
-        if (file.id !== fileId) return file;
-        if (file.pages === pages) return file;
-        
-        return { ...file, pages };
+  const updateFilePages = (configId: string, pages: number) => {
+    setItems((prev) =>
+      prev.map((item) => {
+        if (item.config.id !== configId) return item;
+        if (item.file.pages === pages) return item;
+
+        return {
+          ...item,
+          file: { ...item.file, pages },
+        };
       })
     );
   };
 
   const removeConfig = (configId: string) => {
-    setConfigs((prev) => {
-      const configToRemove = prev.find((c) => c.id === configId);
-      if (configToRemove) {
-        setUploadedFiles((files) =>
-          files.filter((f) => f.id !== configToRemove.fileId)
-        );
-      }
-      return prev.filter((c) => c.id !== configId);
-    });
+    setItems((prev) =>
+      prev.filter((item) => item.config.id !== configId)
+    );
   };
 
   const applyToAll = (source: DocumentConfig) => {
-    setConfigs((prev) =>
-      prev.map((c) => ({
-        ...c,
-        range: source.range,
-        copies: source.copies,
-        pagesPerSide: source.pagesPerSide,
-        isColor: source.isColor,
-        duplex: source.duplex,
+    setItems((prev) =>
+      prev.map((item) => ({
+        ...item,
+        config: {
+          ...item.config,
+          range: source.range,
+          copies: source.copies,
+          pagesPerSide: source.pagesPerSide,
+          isColor: source.isColor,
+          duplex: source.duplex,
+        },
       }))
     );
   };
 
   const clearCart = () => {
-    setUploadedFiles([]);
-    setConfigs([]);
+    setItems([]);
   };
+
+  // derived state (no duplication)
+  const uploadedFiles = items.map((i) => i.file);
+  const configs = items.map((i) => i.config);
 
   return (
     <CartContext.Provider
       value={{
         uploadedFiles,
         configs,
+        items,
         addToCart,
         updateConfig,
         removeConfig,
         applyToAll,
         updateFilePages,
-        clearCart
+        clearCart,
       }}
     >
       {children}
@@ -105,4 +135,3 @@ export const useCart = () => {
   }
   return context;
 };
-

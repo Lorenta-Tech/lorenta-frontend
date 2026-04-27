@@ -22,30 +22,36 @@ const Dropzone: React.FC<Props> = ({
       onDragLeave={() => setDragActive(false)}
       onDrop={(e) => {
         e.preventDefault();
+        e.stopPropagation();
         setDragActive(false);
         onFiles(e.dataTransfer.files);
       }}
       onClick={() => fileInputRef.current?.click()}
-      className={`border-2 border-dashed rounded-xl p-10 text-center cursor-pointer transition ${
+      className={`border-2 border-dashed md:py-20 rounded-xl p-10 text-center cursor-pointer transition ${
         dragActive
           ? "border-blue-500 bg-blue-50"
           : "border-gray-300 hover:border-gray-400"
       }`}
     >
       <p className="text-gray-600">
-        Drag & drop files here, or{" "}
-        <span className="text-blue-600 font-medium">browse</span>
+        Drag & drop files here, or
       </p>
 
       <p className="text-gray-600">
-        <span className="text-blue-600 font-medium">browse</span>
+        <span className="text-blue-600 ">select files</span>
       </p>
       
       <input
         type="file"
         multiple
         ref={fileInputRef}
-        onChange={(e) => onFiles(e.target.files)}
+        accept="image/*,.pdf,.doc,.docx,.ppt,.pptx,.txt"
+        onChange={(e) => {
+          const files = e.target.files;
+          if (!files || files.length === 0) return;
+          onFiles(e.target.files);
+          e.target.value="";
+        }}
         className="hidden"
       />
     </div>

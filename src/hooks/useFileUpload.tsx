@@ -14,9 +14,15 @@ export const useFileUpload = () => {
         prev.map((f) => `${f.name}-${f.size}-${f.lastModified}`)
       );
 
+      const seen = new Set<string>();
+
       const filtered = newFiles.filter((f) => {
         const key = `${f.name}-${f.size}-${f.lastModified}`;
-        return !existingKeys.has(key);
+
+        if (existingKeys.has(key) || seen.has(key)) return false;
+
+        seen.add(key);
+        return true;
       });
 
       return [...prev, ...filtered];

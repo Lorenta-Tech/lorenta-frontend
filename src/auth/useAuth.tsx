@@ -4,11 +4,15 @@ export function useAuth() {
   const [user, setUser] = useState<null | { name: string }>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      // In real app → verify token with backend
-      setUser({ name: "J" });
-    }
+    var params = {
+      'client_id': `${import.meta.env.VITE_CLIENT_ID}`,
+      'redirect_uri': 'http://localhost:5173/upload',
+      'response_type': 'token',
+      'scope': 'https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/calendar.readonly',
+      'include_granted_scopes': 'true',
+      'state': 'pass-through value'
+    };
+
   }, []);
 
   const login = () => {

@@ -9,7 +9,6 @@ export interface UploadedFile {
 
 export interface DocumentConfig {
   id: string;
-  fileId: string;
   name: string;
   range: string;
   copies: number;
