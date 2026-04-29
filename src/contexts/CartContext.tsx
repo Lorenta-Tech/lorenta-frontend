@@ -31,8 +31,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
       const seen = new Set<string>();
 
-      const newItems: CartItem[] = newFiles
-        .filter((f) => {
+      const newItems: CartItem[] = newFiles.filter((f) => {
           const key = `${f.name}-${f.size}`;
           if (existing.has(key) || seen.has(key)) return false;
           seen.add(key);
@@ -42,12 +41,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           file,
           config: {
             id: crypto.randomUUID(),
+            isPDF: file.type === "application/pdf",
             name: file.name,
-            range: "",
+            range: `1-${file.pages}`,
             copies: 1,
-            pagesPerSide: 1,
+            pagesPerSheet: 1,
             isColor: false,
             duplex: false,
+            totalPages: file.pages,
           },
         }));
 
@@ -91,9 +92,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         ...item,
         config: {
           ...item.config,
-          range: source.range,
           copies: source.copies,
-          pagesPerSide: source.pagesPerSide,
+          pagesPerSheet: source.pagesPerSheet,
           isColor: source.isColor,
           duplex: source.duplex,
         },

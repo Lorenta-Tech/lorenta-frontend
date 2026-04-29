@@ -18,9 +18,9 @@ const Upload: React.FC = () => {
     removeFile,
   } = useFileUpload();
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (files.length > 0) {
-      const uploaded = uploadFiles(files);
+      const uploaded = await uploadFiles(files);
       addToCart(uploaded); 
       navigate("/cart");
     } else {

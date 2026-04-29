@@ -4,6 +4,7 @@ import ToggleSwitch from "./ToggleSwitch";
 import CardActions from "./CardActions";
 import PageRangePicker from "./PageRangePicker";
 import CopiesStepper from "./CopiesStepper";
+import PPScomponent from "./PPScomponent";
 
 interface Props {
   configs: DocumentConfig;
@@ -35,10 +36,13 @@ const DocumentConfigCard: React.FC<Props> = ({
         onRemove={() => onRemove(configs.id)}
       />
 
-      <PageRangePicker
+      {configs.isPDF && 
+        <PageRangePicker
         value={configs.range}
         onChange={(val: string) => handleChange("range", val)}
       />
+      }
+      
 
       <CopiesStepper
         value={configs.copies}
@@ -52,15 +56,24 @@ const DocumentConfigCard: React.FC<Props> = ({
       />
 
       <ToggleSwitch
-        label="Duplex"
+        label="Double-sided"
         checked={configs.duplex}
         onChange={(val: boolean) => handleChange("duplex", val)}
       />
+
+      <PPScomponent
+        perSheet={configs.pagesPerSheet}
+        onChange={(val: number)=> handleChange("pagesPerSheet", val)}
+      />
+      
+
 
       <CardActions
         onView={() => onView(configs)}
         onApplyToAll={() => onApplyToAll(configs)}
       />
+
+      
 
     </div>
   );

@@ -20,7 +20,6 @@ export const useFileUpload = () => {
         const key = `${f.name}-${f.size}-${f.lastModified}`;
 
         if (existingKeys.has(key) || seen.has(key)) return false;
-
         seen.add(key);
         return true;
       });
@@ -32,7 +31,7 @@ export const useFileUpload = () => {
   const removeFile = (index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
-
+  
   const clearFiles = () => setFiles([]);
 
   return {
