@@ -1,24 +1,24 @@
 import { DocumentConfig, UploadedFile } from "../types";
 
+type CartItem = {
+  file: UploadedFile;
+  config: DocumentConfig;
+};
+
 type CalculateInput = {
-  configs: DocumentConfig[];
-  fileMap: Record<string, UploadedFile>;
+  items: CartItem[];
 };
 
 export const calculateAmountApi = async ({
-  configs,
-  fileMap,
+  items,
 }: CalculateInput): Promise<number> => {
-
   let total = 0;
 
-  configs.forEach((config) => {
-    const file = fileMap[config.fileId];
-    if (!file) return;
+  items.forEach(({ file, config }) => {
+    const pages =
+      file.pages ?? Math.floor(Math.random() * 10) + 1;
 
-    const pages = file.pages || Math.floor(Math.random() * 10) + 1;
-
-    const isColor = config.isColor === true;
+    const isColor = config.isColor;
     const isDuplex = config.duplex;
 
     let pricePerPage = 0;
@@ -29,7 +29,7 @@ export const calculateAmountApi = async ({
       pricePerPage = isColor ? 4 : 1.5;
     }
 
-    total += pages * pricePerPage;
+    total += pages * pricePerPage * config.copies;
   });
 
   return total;

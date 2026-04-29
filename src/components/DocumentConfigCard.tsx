@@ -1,15 +1,17 @@
 import { DocumentConfig } from "../types";
 import CardHeader from "./CardHeader";
-import InputField from "./InputField";
 import ToggleSwitch from "./ToggleSwitch";
 import CardActions from "./CardActions";
+import PageRangePicker from "./PageRangePicker";
+import CopiesStepper from "./CopiesStepper";
+import PPScomponent from "./PPScomponent";
 
 interface Props {
   configs: DocumentConfig;
   onUpdate: (updated: DocumentConfig) => void;
   onRemove: (id: string) => void;
-  onApplyToAll: (config: DocumentConfig) => void;
-  onView: (config: DocumentConfig) => void;
+  onApplyToAll: (configs: DocumentConfig) => void;
+  onView: (configs: DocumentConfig) => void;
 }
 
 const DocumentConfigCard: React.FC<Props> = ({
@@ -27,44 +29,51 @@ const DocumentConfigCard: React.FC<Props> = ({
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-2xl p-4 flex flex-col gap-3">
+    <div className="bg-white shadow-lg rounded-2xl p-4 flex flex-col gap-4">
 
       <CardHeader
         title={configs.name}
         onRemove={() => onRemove(configs.id)}
       />
 
-      <InputField
-        label="Page Range"
+      {configs.isPDF && 
+        <PageRangePicker
         value={configs.range}
-        placeholder="e.g. 1-5, 8"
-        onChange={(val) => handleChange("range", val)}
+        onChange={(val: string) => handleChange("range", val)}
       />
+      }
+      
 
-      <InputField
-        label="Copies"
-        type="number"
-        min={1}
+      <CopiesStepper
         value={configs.copies}
-        onChange={(val) => handleChange("copies", Number(val))}
+        onChange={(val: number) => handleChange("copies", val)}
       />
 
       <ToggleSwitch
         label="Color Print"
         checked={configs.isColor}
-        onChange={(val) => handleChange("isColor", val)}
+        onChange={(val: boolean) => handleChange("isColor", val)}
       />
 
       <ToggleSwitch
-        label="Duplex"
+        label="Double-sided"
         checked={configs.duplex}
-        onChange={(val) => handleChange("duplex", val)}
+        onChange={(val: boolean) => handleChange("duplex", val)}
       />
+
+      <PPScomponent
+        perSheet={configs.pagesPerSheet}
+        onChange={(val: number)=> handleChange("pagesPerSheet", val)}
+      />
+      
+
 
       <CardActions
         onView={() => onView(configs)}
         onApplyToAll={() => onApplyToAll(configs)}
       />
+
+      
 
     </div>
   );

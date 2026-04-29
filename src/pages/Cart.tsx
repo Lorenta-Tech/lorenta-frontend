@@ -1,48 +1,26 @@
 import { Link } from "react-router-dom";
 import DocumentConfigCard from "../components/DocumentConfigCard";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import ViewModal from "../components/ViewModal";
 import Button from "../components/Button";
-import { DocumentConfig, UploadedFile } from "../types";
+import { UploadedFile } from "../types";
 import { useCart } from "../contexts/CartContext"; 
 import { calculateAmountApi } from "../api/calculateAmount";
 
 function Cart() {
-  const { 
-    configs, 
-    uploadedFiles, 
-    updateConfig, 
-    removeConfig, 
-    applyToAll 
-  } = useCart();
-
+  const { items, updateConfig, removeConfig, applyToAll } = useCart();
   const [viewerFile, setViewerFile] = useState<UploadedFile | null>(null);
   const [total, setTotal] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const fileMap = useMemo(
-    () => Object.fromEntries(uploadedFiles.map((f) => [f.id, f])),
-    [uploadedFiles]
-  );
-
-  const handleView = (config: DocumentConfig) => {
-    const file = fileMap[config.fileId];
-    if (file) setViewerFile(file);
-  };
-
   const calculateAmount = async () => {
-  setLoading(true);
-
-  const result = await calculateAmountApi({
-      configs,
-      fileMap,
-    });
-
+    setLoading(true);
+    const result = await calculateAmountApi({ items });
     setTotal(result);
     setLoading(false);
   };
 
-  if (!configs.length) {
+  if (!items.length) {
     return (
       <div className="text-center mt-20">
         <p className="mb-4">Your cart is empty!</p>
@@ -62,19 +40,19 @@ function Cart() {
           </span>
 
           <Link to="/checkout" state={{amount:total}}>
-          <Button>Checkout</Button>
+            <Button>Checkout</Button>
           </Link>
         </div>
       )}
 
-      {configs.map((config) => (
+      {items.map(({ file, config }) => (
         <DocumentConfigCard
-          key={config.id}
+          key={config.id} 
           configs={config}
           onUpdate={updateConfig}
           onRemove={removeConfig}
           onApplyToAll={applyToAll}
-          onView={handleView}
+          onView={() => setViewerFile(file)}
         />
       ))}
 

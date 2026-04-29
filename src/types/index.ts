@@ -4,18 +4,19 @@ export interface UploadedFile {
   type: string;
   size: number;
   content: File;
-  pages?: number
+  pages: number;
 }
 
 export interface DocumentConfig {
   id: string;
-  fileId: string;
+  isPDF: boolean;
   name: string;
   range: string;
   copies: number;
-  pagesPerSide: number;
+  pagesPerSheet: number;
   isColor: boolean;
-  duplex: boolean
+  duplex: boolean;
+  totalPages: number;
 }
 
 export interface AppState {

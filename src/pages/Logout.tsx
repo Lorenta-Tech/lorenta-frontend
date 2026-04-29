@@ -17,11 +17,9 @@ function Logout() {
         localStorage.removeItem("token");
         
       }
-
-
       return next;
     });
-    
+    window.location.reload();
   };
 
   return (
