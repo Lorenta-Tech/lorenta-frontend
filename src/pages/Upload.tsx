@@ -6,10 +6,13 @@ import Dropzone from "../components/Dropzone";
 import FileList from "../components/FileList";
 import { useFileUpload } from "../hooks/useFileUpload";
 import { useCart } from "../contexts/CartContext";
+import { useAlert } from "../contexts/AlertContext"
 
 const Upload: React.FC = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { showAlert } = useAlert();
+
   const {
     files,
     dragActive,
@@ -20,11 +23,11 @@ const Upload: React.FC = () => {
 
   const handleUpload = async () => {
     if (files.length > 0) {
-      const uploaded = await uploadFiles(files);
+      const uploaded = await uploadFiles(files, showAlert);
       addToCart(uploaded); 
       navigate("/cart");
     } else {
-      alert("Select files to upload!");
+      showAlert("Please select files to upload", "warning");
     }
   };
 

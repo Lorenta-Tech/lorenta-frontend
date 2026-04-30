@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { DocumentConfig, UploadedFile } from "../types";
+import { useEffect, useRef } from "react";
 
 type CartItem = {
   file: UploadedFile;
@@ -22,6 +23,13 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const isLoaded = useRef(false);
+
+  useEffect(() => {
+    if (!isLoaded.current) return; 
+  }, [items]);
+
+  
 
   const addToCart = (newFiles: UploadedFile[]) => {
     setItems((prev) => {
@@ -43,7 +51,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             id: crypto.randomUUID(),
             isPDF: file.type === "application/pdf",
             name: file.name,
-            range: `1-${file.pages}`,
+            range: [`1-${file.pages}`],
             copies: 1,
             pagesPerSheet: 1,
             isColor: false,

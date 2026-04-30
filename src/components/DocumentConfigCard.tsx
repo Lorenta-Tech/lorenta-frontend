@@ -21,6 +21,7 @@ const DocumentConfigCard: React.FC<Props> = ({
   onApplyToAll,
   onView,
 }) => {
+  
   const handleChange = <K extends keyof DocumentConfig>(
     field: K,
     value: DocumentConfig[K]
@@ -38,11 +39,15 @@ const DocumentConfigCard: React.FC<Props> = ({
 
       {configs.isPDF && 
         <PageRangePicker
-        value={configs.range}
-        onChange={(val: string) => handleChange("range", val)}
+        value={
+          Array.isArray(configs.range) && configs.range.length > 0
+            ? configs.range
+            : [`1-${configs.totalPages}`]
+        }
+        totalPages={configs.totalPages}
+        onChange={(val: string[]) => handleChange("range", val)}
       />
       }
-      
 
       <CopiesStepper
         value={configs.copies}
@@ -62,18 +67,15 @@ const DocumentConfigCard: React.FC<Props> = ({
       />
 
       <PPScomponent
+        label="Pages per Sheet"
         perSheet={configs.pagesPerSheet}
         onChange={(val: number)=> handleChange("pagesPerSheet", val)}
       />
       
-
-
       <CardActions
         onView={() => onView(configs)}
         onApplyToAll={() => onApplyToAll(configs)}
       />
-
-      
 
     </div>
   );

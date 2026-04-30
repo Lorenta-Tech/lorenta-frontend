@@ -13,6 +13,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Logout from './pages/Logout.tsx';
 import Footer from './components/Footer.tsx';
 import { CartProvider } from './contexts/CartContext.tsx';
+import { AlertProvider } from './contexts/AlertContext.tsx';
+import AlertContainer from './components/AlertContainer.tsx';
 
 
 function App() {
@@ -22,13 +24,17 @@ function App() {
     {
       path: "/",
       element: (
+        <AlertProvider>
+          
         <CartProvider>
           <Navbar />
+          <AlertContainer/>
           <div className="px-5 py-4">
             <Outlet />
           </div>
           <Footer/>
         </CartProvider>
+        </AlertProvider>
       ),
       errorElement: <ErrorBoundary />,
       children: [
