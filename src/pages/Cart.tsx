@@ -20,6 +20,14 @@ function Cart() {
     setLoading(false);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
+  };
+
   if (!items.length) {
     return (
       <div className="text-center mt-20">
@@ -32,9 +40,9 @@ function Cart() {
   }
 
   return (
-    <div className="max-w-4xl flex flex-col justify-center m-auto gap-5">
+    <div className="max-w-4xl flex flex-col m-auto gap-5">
       {total !== null && (
-        <div className="flex justify-between items-center bg-white shadow px-6 py-4 rounded-lg">
+        <div id="checkout" className="flex justify-between items-center bg-white shadow px-6 py-4 rounded-lg">
           <span className="text-lg font-medium">
             Total: ₹{total.toFixed(2)}
           </span>
@@ -61,8 +69,11 @@ function Cart() {
         onClose={() => setViewerFile(null)}
       />
 
-      <div className="flex gap-3 justify-center">
-        <Button onClick={calculateAmount} disabled={loading}>
+      <div className="mt-10 sticky bottom-8 flex gap-3 z-200 w-full justify-center">
+        <Button onClick={async () =>{
+          await calculateAmount();
+          scrollToTop();
+        }} disabled={loading}>
           {loading ? "Calculating..." : "Calculate amount"}
         </Button>
         <Link to="/upload">

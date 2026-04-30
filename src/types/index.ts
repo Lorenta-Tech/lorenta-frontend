@@ -11,13 +11,22 @@ export interface DocumentConfig {
   id: string;
   isPDF: boolean;
   name: string;
-  range: string;
+  range: string[];
   copies: number;
   pagesPerSheet: number;
   isColor: boolean;
   duplex: boolean;
   totalPages: number;
 }
+
+export interface Order {
+  session_id: string;
+  totalpages: number;
+  price: number;
+  orderDate: string;
+  status: string; 
+  files: any[];
+};
 
 export interface AppState {
   isAuthenticated: boolean;

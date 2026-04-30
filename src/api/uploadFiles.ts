@@ -2,15 +2,16 @@ import { UploadedFile } from "../types";
 import * as pdfjsLib from "pdfjs-dist"
 
 async function getPageCount(f: File): Promise<number>{
- if (f.type === "application/pdf"){
-  const arrayBuffer = await f.arrayBuffer();
-  const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
-  return pdf.numPages;
- }
- return 1;
+
+  if (f.type === "application/pdf"){
+    const arrayBuffer = await f.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+    return pdf.numPages;
+  }
+  return 1;
 }
 
-export default async function uploadFiles(files: File[]): Promise<UploadedFile[]> {
+export default async function uploadFiles(files: File[], showAlert:any): Promise<UploadedFile[]> {
   const results = await Promise.all(
     files.map(async (f) => {
       const pages = await getPageCount(f);
@@ -33,7 +34,7 @@ export default async function uploadFiles(files: File[]): Promise<UploadedFile[]
   const hasLargeFile = results.some(r => r === null);
 
   if (hasLargeFile){
-    alert("Files with 200+ pages are not supported.")
+    showAlert("Files above 200+ are not supported", "error");
   }
   return results.filter((r): r is UploadedFile => r !== null);
 
