@@ -69,7 +69,7 @@ function Cart() {
         onClose={() => setViewerFile(null)}
       />
 
-      <div className="mt-10 sticky bottom-8 flex gap-3 z-200 w-full justify-center">
+      <div className="mt-10 sticky bottom-8 flex gap-3 z-10 w-full justify-center">
         <Button onClick={async () =>{
           await calculateAmount();
           scrollToTop();
