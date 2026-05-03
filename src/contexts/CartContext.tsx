@@ -111,10 +111,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setItems([]);
   };
 
-  // derived state (no duplication)
-  const uploadedFiles = items.map((i) => i.file);
-  const configs = items.map((i) => i.config);
-
   return (
     <CartContext.Provider
       value={{
