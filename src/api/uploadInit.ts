@@ -47,7 +47,7 @@ export async function getSKeys(metadata: UploadInitPayload[]): Promise<UploadIni
   return json;
 }
 
-export async function uploadCart(items: CartItem[]) {
+export async function uploadCart(items: CartItem[]): Promise<string> { 
   const metadata = items.map(({ file }) => ({
     file_name: file.name,
     content_type: file.type || getMimeTypeFromName(file.name),
@@ -70,6 +70,9 @@ export async function uploadCart(items: CartItem[]) {
       return uploadToS3(file.content, match.upload_url);
     })
   );
+  // const orderID :string = await uploadConfigs(items);
+  //return orderID
+  return "1";
 }
 
 async function uploadToS3(file: File, url: string) {

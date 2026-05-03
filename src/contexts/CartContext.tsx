@@ -8,8 +8,6 @@ type CartItem = {
 };
 
 interface CartContextType {
-  uploadedFiles: UploadedFile[];
-  configs: DocumentConfig[];
   items: CartItem[];
   addToCart: (newFiles: UploadedFile[]) => void;
   updateConfig: (updated: DocumentConfig) => void;
@@ -120,8 +118,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   return (
     <CartContext.Provider
       value={{
-        uploadedFiles,
-        configs,
         items,
         addToCart,
         updateConfig,
