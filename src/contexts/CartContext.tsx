@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { DocumentConfig, UploadedFile, CartItem } from "../types";
 import { useEffect, useRef, Dispatch, SetStateAction } from "react";
+import { loadCart, saveCart, clearCartDB } from "../helper/db";
 
 interface CartContextType {
   items: CartItem[];
@@ -18,12 +19,32 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   const isLoaded = useRef(false);
 
   useEffect(() => {
-    if (!isLoaded.current) return; 
-  }, [items]);
-  
+    const init = async () => {
+      const stored = await loadCart();
+
+      if (stored) {
+        setItems(stored.items || []);
+        setTotalAmount(stored.totalAmount || 0);
+      }
+
+      isLoaded.current = true;
+    };
+
+    init();
+  }, []);
+
+ useEffect(() => {
+    if (!isLoaded.current) return;
+
+    saveCart({
+      items,
+      totalAmount,
+    });
+  }, [items, totalAmount]);
 
   const addToCart = (newFiles: UploadedFile[]) => {
     setItems((prev) => {
@@ -101,10 +122,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     );
   };
 
-  const [totalAmount, setTotalAmount] = useState(0);
-
   const clearCart = () => {
     setItems([]);
+    clearCartDB();
   };
 
   return (

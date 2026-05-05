@@ -1,8 +1,8 @@
 export async function createRazorpayOrder(payload: {
   session_id: string;
-  amount: number;
+  amount_paise: number;
 }) {
-  const res = await fetch("/payment/create-order", {
+  const res = await fetch("/payments/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -18,27 +18,18 @@ export async function createRazorpayOrder(payload: {
 }
 
 export const openRazorpay = (paymentOrder: any, session_id: string): Promise<any> => {
+  const {razorpay_order_id, currency, amount_paise } = paymentOrder;
   return new Promise((resolve, reject) => {
     const options = {
       key: "",
-      amount: paymentOrder.amount,
-      currency: "INR",
+      amount: amount_paise,
+      currency: currency,
       name: "PrintFlow",
       description: "Document Order",
-      order_id: paymentOrder.razorpay_order_id,
+      order_id: razorpay_order_id,
 
-      handler: async function (response: any) {
+      handler: async function () {
         try {
-          await fetch("/payment/verify", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              ...response,
-              session_id,
-            }),
-          });
           const result = await pollPaymentStatus(session_id);
           resolve(result);
         } catch (err) {
@@ -66,10 +57,11 @@ const pollPaymentStatus = async (session_id: string) => {
   const MAX = 15;
 
   for (let i = 0; i < MAX; i++) {
-    const res = await fetch(`/payment/status?session_id=${session_id}`);
-    const data = await res.json();
+    const res = await fetch(`/payments/status?session_id=${session_id}`);
+    const data = (await res.json()).data;
+    
 
-    if (data.status === "paid") {
+    if (data.status === "success") {
       return data;
     }
 
@@ -79,6 +71,5 @@ const pollPaymentStatus = async (session_id: string) => {
 
     await new Promise((r) => setTimeout(r, 2000));
   }
-
   throw new Error("Timeout waiting for payment confirmation");
 };

@@ -16,9 +16,7 @@ function Cart() {
   const calculate = async () => {
     setLoading(true);
     const result = await calculateAmount({ items });
-
     setTotalAmount(result);
-
     setLoading(false);
   };
 

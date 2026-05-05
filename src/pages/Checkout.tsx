@@ -19,7 +19,6 @@ const Checkout = () => {
     try {
       setLoading(true);
       setError(null);
-
       const data = await uploadCart(items);
 
       const { session_id, total_amount } = data;
@@ -27,7 +26,7 @@ const Checkout = () => {
       
       const paymentOrder = await createRazorpayOrder({
         session_id,
-        amount: total_amount,
+        amount_paise: total_amount,
       });
       openRazorpay(paymentOrder, session_id);
       clearCart();
