@@ -8,15 +8,18 @@ export interface UploadedFile {
 }
 
 export interface DocumentConfig {
-  id: string;
-  isPDF: boolean;
-  name: string;
-  range: string[];
+  file_id: string;
   copies: number;
-  pagesPerSheet: number;
-  isColor: boolean;
-  duplex: boolean;
-  totalPages: number;
+  printing_side: string;
+  printing_mode: string;
+  page_range: string[];  
+  page_layout: number;
+  num_of_pages: number;
+}
+
+export interface CartItem{
+  file: UploadedFile;
+  config: DocumentConfig;
 }
 
 export interface Order {

@@ -1,4 +1,5 @@
 import { UploadedFile, DocumentConfig } from "../types";
+import uploadConfirm from "./uploadConfirm";
 
 type CartItem = {
   file: UploadedFile;
@@ -24,7 +25,7 @@ type UploadInitResponse = {
   };
 };
 
-export async function getSKeys(metadata: UploadInitPayload[]): Promise<UploadInitResponse> {
+export async function getUploadSession(metadata: UploadInitPayload[]): Promise<UploadInitResponse["data"]> {
   console.log(JSON.stringify({files: metadata}));
   
 
@@ -38,56 +39,54 @@ export async function getSKeys(metadata: UploadInitPayload[]): Promise<UploadIni
   });
 
   if (!response.ok) {
-    const text = await response.text();
-    console.error("Upload init failed:", text);
-    throw new Error("Upload init failed");
+    throw new Error(`Upload init failed: ${await response.text()}`);
   }
 
+
   const json: UploadInitResponse = await response.json();
-  return json;
+  return json.data;
 }
 
-export async function uploadCart(items: CartItem[]): Promise<string> { 
+export async function uploadCart(items: CartItem[]): Promise<any> { 
   const metadata = items.map(({ file }) => ({
     file_name: file.name,
     content_type: file.type || getMimeTypeFromName(file.name),
   }));
 
-  const response =  await getSKeys(metadata);
+  const response =  await getUploadSession(metadata);
   console.log("S3 keys received")
-  const DBfiles = response.data.files;
+  const session_id = response.session_id
+  const DBfiles = response.files;
 
+  const fileMap = new Map(DBfiles.map(f => [f.file_name, f]));
   await Promise.all(
-    items.map(({ file }) => {
-      const match = DBfiles.find(
-        (f) => f.file_name === file.name
-      );
+    items.map(async ({ file, config }) => {
+    const match = fileMap.get(file.name);
 
-      if (!match) {
-        throw new Error(`Missing upload URL for ${file.name}`);
-      }
+    if (!match) {
+      throw new Error(`Missing upload URL for ${file.name}`);
+    }
 
-      return uploadToS3(file.content, match.upload_url);
+    config.file_id = match.file_id;
+    return uploadToS3(file.content as File, match.upload_url);
     })
   );
-  // const orderID :string = await uploadConfigs(items);
-  //return orderID
-  return "1";
+
+  console.log("Files uploaded to S3")
+  return uploadConfirm(session_id, items.map(item => item.config))
+
 }
+
 
 async function uploadToS3(file: File, url: string) {
   const res = await fetch(url, {
     method: "PUT",
     body: file,
-    headers: {
-      "Content-Type": file.type,
-    },
   });
 
   if (!res.ok) {
     throw new Error("S3 upload failed");
   }
-  console.log("Files uploaded to S3")
 }
 
 

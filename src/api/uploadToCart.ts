@@ -11,7 +11,7 @@ async function getPageCount(f: File): Promise<number>{
   return 1;
 }
 
-export default async function uploadFiles(files: File[], showAlert:any): Promise<UploadedFile[]> {
+export default async function uploadToCart(files: File[], showAlert:any): Promise<UploadedFile[]> {
   const results = await Promise.all(
     files.map(async (f) => {
       const pages = await getPageCount(f);
