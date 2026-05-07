@@ -1,82 +1,83 @@
-import { DocumentConfig } from "../types";
+import { DocumentConfig, UploadedFile } from "../types";
 import CardHeader from "./CardHeader";
 import ToggleSwitch from "./ToggleSwitch";
 import CardActions from "./CardActions";
 import PageRangePicker from "./PageRangePicker";
 import CopiesStepper from "./CopiesStepper";
 import PPScomponent from "./PPScomponent";
+import { useCart } from "../contexts/CartContext";
 
 interface Props {
-  configs: DocumentConfig;
-  onUpdate: (updated: DocumentConfig) => void;
-  onRemove: (id: string) => void;
-  onApplyToAll: (configs: DocumentConfig) => void;
-  onView: (configs: DocumentConfig) => void;
+  config: DocumentConfig;
+  file: UploadedFile;
+  onView: () => void;
 }
 
-const DocumentConfigCard: React.FC<Props> = ({
-  configs,
-  onUpdate,
-  onRemove,
-  onApplyToAll,
-  onView,
-}) => {
-  
+const DocumentConfigCard: React.FC<Props> = ({ config, file, onView }) => {
+  const { updateConfig, removeConfig, applyToAll } = useCart();
+
+  const isPDF = (file.type === "application/pdf");
+
   const handleChange = <K extends keyof DocumentConfig>(
     field: K,
     value: DocumentConfig[K]
   ) => {
-    onUpdate({ ...configs, [field]: value });
+    updateConfig({ ...config, [field]: value });
   };
 
   return (
     <div className="bg-white shadow-lg rounded-2xl p-4 flex flex-col gap-4">
-
+      
       <CardHeader
-        title={configs.name}
-        onRemove={() => onRemove(configs.id)}
+        title={file.name}
+        onRemove={() => removeConfig(config.file_id)}
       />
 
-      {configs.isPDF && 
+      {isPDF && (
         <PageRangePicker
-        value={
-          Array.isArray(configs.range) && configs.range.length > 0
-            ? configs.range
-            : [`1-${configs.totalPages}`]
-        }
-        totalPages={configs.totalPages}
-        onChange={(val: string[]) => handleChange("range", val)}
-      />
-      }
+          value={
+            Array.isArray(config.page_range) && config.page_range.length > 0
+              ? config.page_range
+              : [`1-${file.pages}`]
+          }
+          totalPages={file.pages}
+          onChange={(val: string[]) => handleChange("page_range", val)}
+        />
+      )}
 
       <CopiesStepper
-        value={configs.copies}
+        value={config.copies}
         onChange={(val: number) => handleChange("copies", val)}
       />
 
       <ToggleSwitch
         label="Color Print"
-        checked={configs.isColor}
-        onChange={(val: boolean) => handleChange("isColor", val)}
+        checked={config.printing_mode === "color"}
+        onChange={(val: boolean) => 
+          handleChange("printing_mode", val ? "color" : "monochromatic")
+        }
       />
 
       <ToggleSwitch
         label="Double-sided"
-        checked={configs.duplex}
-        onChange={(val: boolean) => handleChange("duplex", val)}
+        checked={config.printing_side === "double_side"}
+        onChange={(val: boolean) =>
+          handleChange("printing_side", val ? "double_side" : "single_side")
+        }
       />
 
       <PPScomponent
         label="Pages per Sheet"
-        perSheet={configs.pagesPerSheet}
-        onChange={(val: number)=> handleChange("pagesPerSheet", val)}
-      />
-      
-      <CardActions
-        onView={() => onView(configs)}
-        onApplyToAll={() => onApplyToAll(configs)}
+        perSheet={config.page_layout}
+        onChange={(val: number) =>
+          handleChange("page_layout", val)
+        }
       />
 
+      <CardActions
+        onView={onView}
+        onApplyToAll={() => applyToAll(config)}
+      />
     </div>
   );
 };

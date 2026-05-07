@@ -1,15 +1,14 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Button from "../components/Button";
 import { useCart } from "../contexts/CartContext";
 import { uploadCart } from "../api/uploadInit";
 import Loader from "../components/Loader";
+import {createRazorpayOrder, openRazorpay} from "../api/payment";
 
 const Checkout = () => {
-  const location = useLocation();
-  const { items, clearCart } = useCart();
+  const { items, totalAmount, setTotalAmount, clearCart } = useCart();
   const navigate = useNavigate();
-  const amount = location.state?.amount;
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,11 +19,20 @@ const Checkout = () => {
     try {
       setLoading(true);
       setError(null);
+      const data = await uploadCart(items);
 
-      const orderID: string = await uploadCart(items);
-
+      const { session_id, total_amount } = data;
+      setTotalAmount(total_amount);
+      
+      const paymentOrder = await createRazorpayOrder({
+        session_id,
+        amount_paise: total_amount,
+      });
+      const paymentResult = openRazorpay(paymentOrder);
+      console.log(paymentResult);
       clearCart();
-      navigate(`/order/${orderID}`);
+      navigate("/order/1");
+      
     } catch (err) {
       console.error(err);
       setError("Something went wrong. Try again.");
@@ -41,7 +49,7 @@ const Checkout = () => {
 
         <div className="border rounded-lg p-4 bg-gray-50">
           <p className="text-gray-600">Total Amount</p>
-          <p className="text-3xl font-bold">₹{amount ?? 0}</p>
+          <p className="text-3xl font-bold">₹{totalAmount}</p>
         </div>
 
         {error && (

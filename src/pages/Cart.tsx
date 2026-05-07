@@ -5,18 +5,18 @@ import ViewModal from "../components/ViewModal";
 import Button from "../components/Button";
 import { UploadedFile } from "../types";
 import { useCart } from "../contexts/CartContext"; 
-import { calculateAmountApi } from "../api/calculateAmount";
+import { calculateAmount } from "../api/calculateAmount";
 
 function Cart() {
-  const { items, updateConfig, removeConfig, applyToAll } = useCart();
+  const { items, totalAmount, setTotalAmount } = useCart();
+
   const [viewerFile, setViewerFile] = useState<UploadedFile | null>(null);
-  const [total, setTotal] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const calculateAmount = async () => {
+  const calculate = async () => {
     setLoading(true);
-    const result = await calculateAmountApi({ items });
-    setTotal(result);
+    const result = await calculateAmount({ items });
+    setTotalAmount(result);
     setLoading(false);
   };
 
@@ -24,7 +24,7 @@ function Cart() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
@@ -41,13 +41,14 @@ function Cart() {
 
   return (
     <div className="max-w-4xl flex flex-col m-auto gap-5">
-      {total !== null && (
-        <div id="checkout" className="flex justify-between items-center bg-white shadow px-6 py-4 rounded-lg">
+
+      {totalAmount > 0 && (
+        <div className="flex justify-between items-center bg-white shadow px-6 py-4 rounded-lg">
           <span className="text-lg font-medium">
-            Total: ₹{total.toFixed(2)}
+            Total: ₹{totalAmount.toFixed(2)}
           </span>
 
-          <Link to="/checkout" state={{amount:total}}>
+          <Link to="/checkout" state={{ amount: totalAmount }}>
             <Button>Checkout</Button>
           </Link>
         </div>
@@ -55,11 +56,9 @@ function Cart() {
 
       {items.map(({ file, config }) => (
         <DocumentConfigCard
-          key={config.id} 
-          configs={config}
-          onUpdate={updateConfig}
-          onRemove={removeConfig}
-          onApplyToAll={applyToAll}
+          key={config.file_id}
+          config={config}
+          file={file}
           onView={() => setViewerFile(file)}
         />
       ))}
@@ -70,12 +69,16 @@ function Cart() {
       />
 
       <div className="mt-10 sticky bottom-8 flex gap-3 z-10 w-full justify-center">
-        <Button onClick={async () =>{
-          await calculateAmount();
-          scrollToTop();
-        }} disabled={loading}>
+        <Button
+          onClick={async () => {
+            await calculate();
+            scrollToTop();
+          }}
+          disabled={loading}
+        >
           {loading ? "Calculating..." : "Calculate amount"}
         </Button>
+
         <Link to="/upload">
           <Button>Upload more</Button>
         </Link>

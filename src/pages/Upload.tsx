@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import uploadFiles from "../api/uploadFiles";
+import uploadToCart from "../api/uploadToCart";
 import Button from "../components/Button";
 import Dropzone from "../components/Dropzone";
 import FileList from "../components/FileList";
@@ -23,7 +23,7 @@ const Upload: React.FC = () => {
 
   const handleUpload = async () => {
     if (files.length > 0) {
-      const uploaded = await uploadFiles(files, showAlert);
+      const uploaded = await uploadToCart(files, showAlert);
       addToCart(uploaded); 
       navigate("/cart");
     } else {

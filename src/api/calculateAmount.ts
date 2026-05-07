@@ -9,7 +9,7 @@ type CalculateInput = {
   items: CartItem[];
 };
 
-export const calculateAmountApi = async ({
+export const calculateAmount = async ({
   items,
 }: CalculateInput): Promise<number> => {
   let total = 0;
@@ -18,8 +18,8 @@ export const calculateAmountApi = async ({
     const pages =
       file.pages ?? Math.floor(Math.random() * 10) + 1;
 
-    const isColor = config.isColor;
-    const isDuplex = config.duplex;
+    const isColor = config.printing_mode;
+    const isDuplex = config.printing_side;
 
     let pricePerPage = 0;
 

@@ -1,11 +1,7 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { DocumentConfig, UploadedFile } from "../types";
-import { useEffect, useRef } from "react";
-
-type CartItem = {
-  file: UploadedFile;
-  config: DocumentConfig;
-};
+import { DocumentConfig, UploadedFile, CartItem } from "../types";
+import { useEffect, useRef, Dispatch, SetStateAction } from "react";
+import { loadCart, saveCart, clearCartDB } from "../helper/db";
 
 interface CartContextType {
   items: CartItem[];
@@ -14,6 +10,8 @@ interface CartContextType {
   removeConfig: (configId: string) => void;
   applyToAll: (source: DocumentConfig) => void;
   updateFilePages: (configId: string, pages: number) => void;
+  totalAmount: number;
+  setTotalAmount:  Dispatch<SetStateAction<number>>;
   clearCart: () => void;
 }
 
@@ -21,13 +19,32 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
+  const [totalAmount, setTotalAmount] = useState(0);
   const isLoaded = useRef(false);
 
   useEffect(() => {
-    if (!isLoaded.current) return; 
-  }, [items]);
+    const init = async () => {
+      const stored = await loadCart();
 
-  
+      if (stored) {
+        setItems(stored.items || []);
+        setTotalAmount(stored.totalAmount || 0);
+      }
+
+      isLoaded.current = true;
+    };
+
+    init();
+  }, []);
+
+ useEffect(() => {
+    if (!isLoaded.current) return;
+
+    saveCart({
+      items,
+      totalAmount,
+    });
+  }, [items, totalAmount]);
 
   const addToCart = (newFiles: UploadedFile[]) => {
     setItems((prev) => {
@@ -46,15 +63,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         .map((file) => ({
           file,
           config: {
-            id: crypto.randomUUID(),
-            isPDF: file.type === "application/pdf",
-            name: file.name,
-            range: [`1-${file.pages}`],
+            file_id: file.id,
+            page_range: [`1-${file.pages}`],
             copies: 1,
-            pagesPerSheet: 1,
-            isColor: false,
-            duplex: false,
-            totalPages: file.pages,
+            page_layout: 1,
+            printing_mode: "monochromatic",
+            printing_side: "single_side",
+            num_of_pages: file.pages,
           },
         }));
 
@@ -65,7 +80,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const updateConfig = (updated: DocumentConfig) => {
     setItems((prev) =>
       prev.map((item) =>
-        item.config.id === updated.id
+        item.config.file_id === updated.file_id
           ? { ...item, config: updated }
           : item
       )
@@ -75,7 +90,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const updateFilePages = (configId: string, pages: number) => {
     setItems((prev) =>
       prev.map((item) => {
-        if (item.config.id !== configId) return item;
+        if (item.config.file_id !== configId) return item;
         if (item.file.pages === pages) return item;
 
         return {
@@ -88,7 +103,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const removeConfig = (configId: string) => {
     setItems((prev) =>
-      prev.filter((item) => item.config.id !== configId)
+      prev.filter((item) => item.config.file_id !== configId)
     );
   };
 
@@ -99,9 +114,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         config: {
           ...item.config,
           copies: source.copies,
-          pagesPerSheet: source.pagesPerSheet,
-          isColor: source.isColor,
-          duplex: source.duplex,
+          pagesPerSheet: source.page_layout,
+          isColor: source.printing_mode,
+          duplex: source.printing_side,
         },
       }))
     );
@@ -109,11 +124,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const clearCart = () => {
     setItems([]);
+    clearCartDB();
   };
-
-  // derived state (no duplication)
-  const uploadedFiles = items.map((i) => i.file);
-  const configs = items.map((i) => i.config);
 
   return (
     <CartContext.Provider
@@ -124,6 +136,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         removeConfig,
         applyToAll,
         updateFilePages,
+        totalAmount,
+        setTotalAmount,
         clearCart,
       }}
     >
