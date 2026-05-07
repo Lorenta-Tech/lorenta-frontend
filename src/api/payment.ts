@@ -2,7 +2,8 @@ export async function createRazorpayOrder(payload: {
   session_id: string;
   amount_paise: number;
 }) {
-  const res = await fetch("/payments/create", {
+  payload["amount_paise"] *= 100;
+  const res = await fetch("https://unfearingly-heterozygous-brittny.ngrok-free.dev/payments/create", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,15 +18,16 @@ export async function createRazorpayOrder(payload: {
   return res.json();
 }
 
-export const openRazorpay = (paymentOrder: any, session_id: string): Promise<any> => {
-  const {razorpay_order_id, currency, amount_paise } = paymentOrder;
+export const openRazorpay = (paymentOrder: any): Promise<any> => {
+  const {razorpay_order_id, currency, amount_paise, session_id } = paymentOrder;
+
   return new Promise((resolve, reject) => {
     const options = {
-      key: "",
+      key: "rzp_test_SmQncbn8cZ6dd9",
       amount: amount_paise,
       currency: currency,
-      name: "PrintFlow",
-      description: "Document Order",
+      name: "Lorenta Tech",
+      description: "Print order",
       order_id: razorpay_order_id,
 
       handler: async function () {
@@ -44,7 +46,7 @@ export const openRazorpay = (paymentOrder: any, session_id: string): Promise<any
       },
 
       theme: {
-        color: "#000000",
+        color: "#00ff87",
       },
     };
 
@@ -57,15 +59,17 @@ const pollPaymentStatus = async (session_id: string) => {
   const MAX = 15;
 
   for (let i = 0; i < MAX; i++) {
-    const res = await fetch(`/payments/status?session_id=${session_id}`);
+    console.log("Checking status");
+    
+    const res = await fetch(`https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/jobs/recent`);
     const data = (await res.json()).data;
     
 
-    if (data.status === "success") {
+    if (data.status === "paid") {
       return data;
     }
 
-    if (data.status === "failed") {
+    if (data.status === "attempted") {
       throw new Error("Payment failed");
     }
 

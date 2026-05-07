@@ -28,8 +28,10 @@ const Checkout = () => {
         session_id,
         amount_paise: total_amount,
       });
-      openRazorpay(paymentOrder, session_id);
+      const paymentResult = openRazorpay(paymentOrder);
+      console.log(paymentResult);
       clearCart();
+      navigate("/order/1");
       
     } catch (err) {
       console.error(err);
