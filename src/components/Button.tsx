@@ -6,7 +6,7 @@ type ButtonProps = {
 
 export default function Button({children, className="", ...props}: ButtonProps){
   return (
-    <button {...props} className={`px-5 py-3 hover:cursor-pointer bg-bgsecondary text-textsecondary rounded-xl ${className}`}>
+    <button {...props} className={`px-5 py-3 hover:cursor-pointer bg-bgsecondary text-textsecondary rounded-full ${className}`}>
         {children}
     </button>
   );

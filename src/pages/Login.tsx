@@ -1,27 +1,92 @@
-import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
-
-function handleLogin(){
-  console.log("Login")
-}
+import { GoogleLogin } from "@react-oauth/google";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function Login() {
+
+  const navigate = useNavigate();
+
+  const { login } = useAuth();
+
+  const handleSuccess = async (credentialResponse: any) => {
+
+    try {
+
+      const response = await fetch(
+        "https://unfearingly-heterozygous-brittny.ngrok-free.dev/auth/google",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id_token: credentialResponse.credential,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Authentication failed");
+      }
+
+      const data = await response.json();
+
+      console.log(data);
+
+      login(credentialResponse.credential);
+
+      navigate("/upload");
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+  };
+
   return (
-  <div className="flex justify-center items-center min-h-[70vh]">
-    <form className="flex flex-col justify-center items-center shadow mx-auto rounded-lg py-30 w-full">
+    <div className="min-h-[80vh] flex justify-center items-center px-5">
 
-      <h1 className="text-3xl">Welcome to Lorenta</h1>
-      <button onClick={handleLogin} className="shadow-md text-gray-700 flex items-center gap-3 px-8 py-2 rounded-3xl bg-white mt-10">
-        <FcGoogle/>Continue with Google
-      </button>
-      <p className="underline my-3"><Link to="/">Go to home</Link></p>
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-10">
 
-      {/* fake log toggle  */}
-      <Link to="/logout">Fake login</Link>
-    </form>
-  </div>
+        <div className="flex flex-col items-center">
+
+          <h1 className="text-4xl font-bold text-textprimary text-center">
+            Welcome to Lorenta
+          </h1>
+
+          <p className="text-gray-500 mt-3 text-center">
+            Continue with Google to access your account
+          </p>
+
+          <div className="mt-10 w-full flex justify-center">
+
+            <GoogleLogin
+              onSuccess={handleSuccess}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+              theme="filled_blue"
+              size="large"
+              shape="pill"
+              text="continue_with"
+            />
+
+          </div>
+
+          <Link
+            to="/"
+            className="mt-8 text-sm underline text-gray-500 hover:text-black transition"
+          >
+            Go to home
+          </Link>
+
+        </div>
+
+      </div>
+
+    </div>
   );
-  
 }
 
 export default Login;

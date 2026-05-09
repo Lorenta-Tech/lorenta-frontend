@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import OrderCard from "../components/OrderCard";
+import OrderCard from "../components/OrderCard.tsx";
 
-function History() {
+function Jobs() {
 
-  const [orders, setOrders] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>([]);
 
   const [loading, setLoading] = useState(true);
 
@@ -11,24 +11,24 @@ function History() {
 
   useEffect(() => {
 
-    const fetchOrders = async () => {
+    const fetchJobs = async () => {
 
       try {
 
         setLoading(true);
 
         const response = await fetch(
-  "https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/jobs/active",
-  {
-    method: "GET",
+          "https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/jobs/recent",
+          {
+            method: "GET",
 
-    credentials: "omit",
+            credentials: "omit",
 
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-);
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
 
@@ -36,46 +36,44 @@ function History() {
 
           console.error(text);
 
-          throw new Error("Failed to fetch orders");
+          throw new Error("Failed to fetch jobs");
         }
 
         const json = await response.json();
 
         console.log(json);
 
-        // IMPORTANT FIX
-        setOrders(json.data.jobs || []);
+        setJobs(json.data.jobs || []);
 
       } catch (err) {
 
         console.error(err);
 
-        setError("Failed to load orders");
+        setError("Failed to load active jobs");
 
       } finally {
 
         setLoading(false);
-
       }
     };
 
-    fetchOrders();
+    fetchJobs();
 
   }, []);
 
   // =========================
-  // Loading State
+  // Loading
   // =========================
   if (loading) {
     return (
       <div className="mt-20 text-center text-lg text-gray-600">
-        Loading orders...
+        Loading active jobs...
       </div>
     );
   }
 
   // =========================
-  // Error State
+  // Error
   // =========================
   if (error) {
     return (
@@ -86,12 +84,12 @@ function History() {
   }
 
   // =========================
-  // Empty State
+  // Empty
   // =========================
-  if (orders.length === 0) {
+  if (jobs.length === 0) {
     return (
       <div className="mt-20 text-center text-gray-500 text-lg">
-        No active print jobs found
+        No active jobs found
       </div>
     );
   }
@@ -99,15 +97,23 @@ function History() {
   return (
     <div className="mt-10 px-4">
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
 
-        <h1 className="text-4xl font-bold mb-8 text-textprimary">
-          Active Orders
-        </h1>
+        <div className="flex items-center justify-between mb-8">
+
+          <h1 className="text-4xl font-bold text-textprimary">
+            Active Jobs
+          </h1>
+
+          <span className="bg-bgsecondary text-white px-4 py-2 rounded-full text-sm font-semibold">
+            {jobs.length} Jobs
+          </span>
+
+        </div>
 
         <ul className="flex flex-col gap-7">
 
-          {orders.map((order) => {
+          {jobs.map((job) => {
 
             const {
               session_id,
@@ -116,7 +122,7 @@ function History() {
               total_sheets,
               created_at,
               files,
-            } = order;
+            } = job;
 
             return (
               <li key={session_id}>
@@ -141,4 +147,4 @@ function History() {
   );
 }
 
-export default History;
+export default Jobs;
