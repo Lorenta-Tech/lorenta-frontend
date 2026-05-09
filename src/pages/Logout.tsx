@@ -1,35 +1,22 @@
-import Button from "../components/Button";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 function Logout() {
-  const [log, setLog] = useState(
-    !!localStorage.getItem("token")
-  );
 
-  const handleToggleLog = () => {
-    setLog(prev => {
-      const next = !prev;
+  const navigate = useNavigate();
 
-      if (next) {
-        localStorage.setItem("token", "true");
-        
-      } else {
-        localStorage.removeItem("token");
-        
-      }
-      return next;
-    });
-    window.location.reload();
-  };
+  const { logout } = useAuth();
 
-  return (
-    <>
-      <h1>{log ? "Logged in" : "Logged out"}</h1>
-      <Button onClick={handleToggleLog}>
-        Toggle Log
-      </Button>
-    </>
-  );
+  useEffect(() => {
+
+    logout();
+
+    navigate("/");
+
+  }, [logout, navigate]);
+
+  return null;
 }
 
 export default Logout;
