@@ -18,7 +18,7 @@ function History() {
         setLoading(true);
 
         const response = await fetch(
-  "https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/jobs/active",
+  "https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/jobs/recent",
   {
     method: "GET",
 
