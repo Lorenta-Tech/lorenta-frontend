@@ -20,56 +20,55 @@ import AlertContainer from './components/AlertContainer.tsx';
 
 
 function App() {
-  
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: (
         <AlertProvider>
-          
-        <CartProvider>
-          <Navbar />
-          <AlertContainer/>
-          <div className="px-5 py-4">
-            <Outlet />
-          </div>
-          <Footer/>
-        </CartProvider>
+          <CartProvider>
+            <Navbar />
+            <AlertContainer />
+            <div className="px-5 py-4">
+              <Outlet />
+            </div>
+            <Footer />
+          </CartProvider>
         </AlertProvider>
       ),
       errorElement: <ErrorBoundary />,
       children: [
 
-  { index: true, element: <Home /> },
+        { index: true, element: <Home /> },
 
-  {
-    element: <PublicRoute />,
-    children: [
-      { path: "login", element: <Login /> },
-    ],
-  },
+        {
+          element: <PublicRoute />,
+          children: [
+            { path: "login", element: <Login /> },
+          ],
+        },
 
-  { path: "logout", element: <Logout /> },
+        { path: "logout", element: <Logout /> },
 
-  {
-    element: <ProtectedRoute />,
-    children: [
-      { path: "upload", element: <Upload /> },
-      { path: "jobs", element: <Jobs /> },
-      { path: "cart", element: <Cart /> },
-      { path: "checkout", element: <Checkout /> },
-      { path: "history", element: <History /> },
-      { path: "order/:id", element: <Order /> },
-    ],
-  },
-],
+        {
+          element: <ProtectedRoute />,
+          children: [
+            { path: "upload", element: <Upload /> },
+            { path: "jobs", element: <Jobs /> },
+            { path: "cart", element: <Cart /> },
+            { path: "checkout", element: <Checkout /> },
+            { path: "history", element: <History /> },
+            // ✅ FIXED: removed :id param
+            { path: "order", element: <Order /> },
+          ],
+        },
+      ],
     },
   ]);
 
   return (
     <div className="min-h-100">
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </div>
   )
 }

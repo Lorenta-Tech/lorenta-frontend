@@ -18,7 +18,7 @@ function Jobs() {
         setLoading(true);
 
         const response = await fetch(
-          "https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/jobs/recent",
+          "http://localhost:17069/files/jobs/active",
           {
             method: "GET",
 
