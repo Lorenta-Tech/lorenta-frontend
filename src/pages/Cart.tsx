@@ -30,8 +30,9 @@ function Cart() {
 
   if (!items.length) {
     return (
-      <div className="text-center mt-20">
-        <p className="mb-4">Your cart is empty!</p>
+      <div className="mx-auto mt-16 grid max-w-lg justify-items-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-8 text-center shadow-sm">
+        <h1 className="text-3xl font-extrabold text-white">Your cart is empty</h1>
+        <p className="text-white/70">Upload files to start configuring your print order.</p>
         <Link to="/upload">
           <Button>Upload files</Button>
         </Link>
@@ -40,16 +41,17 @@ function Cart() {
   }
 
   return (
-    <div className="max-w-4xl flex flex-col m-auto gap-5">
+    <div className="mx-auto grid w-full max-w-3xl min-w-0 gap-6 pb-6">
 
       {totalAmount > 0 && (
-        <div className="flex justify-between items-center bg-white shadow px-6 py-4 rounded-lg">
-          <span className="text-lg font-medium">
-            Total: ₹{totalAmount.toFixed(2)}
-          </span>
+        <div className="flex min-w-0 items-center justify-between gap-4 border-b border-white/10 pb-5">
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-wide text-white/70">Estimated total</p>
+            <p className="text-2xl font-extrabold text-white">₹{totalAmount.toFixed(2)}</p>
+          </div>
 
-          <Link to="/checkout" state={{ amount: totalAmount }}>
-            <Button>Checkout</Button>
+          <Link to="/checkout" state={{ amount: totalAmount }} className="shrink-0">
+            <Button className="min-w-32 px-6">Checkout</Button>
           </Link>
         </div>
       )}
@@ -68,8 +70,9 @@ function Cart() {
         onClose={() => setViewerFile(null)}
       />
 
-      <div className="mt-10 sticky bottom-8 flex gap-3 z-10 w-full justify-center">
+      <div className="sticky bottom-4 z-10 -mx-1 flex min-w-0 flex-col justify-center gap-3 border-t border-white/10 bg-darkbg/95 px-1 py-4 backdrop-blur sm:mx-0 sm:flex-row sm:rounded-2xl sm:border sm:border-white/15 sm:p-3">
         <Button
+          className="w-full sm:w-auto"
           onClick={async () => {
             await calculate();
             scrollToTop();
@@ -79,8 +82,8 @@ function Cart() {
           {loading ? "Calculating..." : "Calculate amount"}
         </Button>
 
-        <Link to="/upload">
-          <Button>Upload more</Button>
+        <Link to="/upload" className="min-w-0">
+          <Button className="w-full border border-white/15 bg-white/5 text-primary hover:border-primary hover:bg-primary/15 sm:w-auto">Upload more</Button>
         </Link>
       </div>
     </div>

@@ -4,31 +4,32 @@ const AlertContainer = () => {
   const getAlertStyle = (type: string) => {
     switch (type) {
       case "success":
-        return "bg-green-500";
+        return "border-primary/40 bg-primary/15 text-primary";
       case "error":
-        return "bg-red-500";
+        return "border-cta/40 bg-cta/10 text-cta";
       case "warning":
-        return "bg-yellow-500 text-black";
+        return "border-cta/40 bg-cta/10 text-cta";
       case "info":
       default:
-        return "bg-blue-500";
+        return "border-primary/40 bg-primary/15 text-primary";
     }
   };
 
   const { alerts, removeAlert } = useAlert();
 
   return (
-    <div className="fixed top-15 right-5 z-[9999] flex flex-col gap-3">
+    <div className="fixed right-4 top-20 z-[9999] grid w-[calc(100vw-2rem)] max-w-sm gap-3" role="region" aria-live="polite">
       {alerts.map((alert) => (
         <div
           key={alert.id}
-          className={`flex items-center justify-between gap-4 px-4 py-3 rounded-lg shadow-lg text-white min-w-[250px]
-            ${getAlertStyle(alert.type)}`}
+          className={`flex items-start justify-between gap-3 rounded-2xl border px-4 py-3 text-sm font-semibold shadow-lg ${getAlertStyle(alert.type)}`}
         >
-          <span className="text-sm">{alert.message}</span>
+          <span>{alert.message}</span>
           <button
+            type="button"
             onClick={() => removeAlert(alert.id)}
-            className="text-white/80 hover:text-white text-lg leading-none"
+            className="grid size-8 place-items-center rounded-lg transition hover:bg-white/10"
+            aria-label="Dismiss alert"
           >
             ×
           </button>

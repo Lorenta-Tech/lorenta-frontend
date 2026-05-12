@@ -66,7 +66,7 @@ function Jobs() {
   // =========================
   if (loading) {
     return (
-      <div className="mt-20 text-center text-lg text-gray-600">
+      <div className="mt-20 text-center text-lg text-white/70">
         Loading active jobs...
       </div>
     );
@@ -77,7 +77,7 @@ function Jobs() {
   // =========================
   if (error) {
     return (
-      <div className="mt-20 text-center text-red-500 text-lg">
+      <div className="mt-20 text-center text-lg text-cta">
         {error}
       </div>
     );
@@ -88,24 +88,24 @@ function Jobs() {
   // =========================
   if (jobs.length === 0) {
     return (
-      <div className="mt-20 text-center text-gray-500 text-lg">
+      <div className="mt-20 text-center text-lg text-white/70">
         No active jobs found
       </div>
     );
   }
 
   return (
-    <div className="mt-10 px-4">
+    <div className="mt-4">
 
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
 
         <div className="flex items-center justify-between mb-8">
 
-          <h1 className="text-4xl font-bold text-textprimary">
+          <h1 className="text-4xl font-extrabold text-white">
             Active Jobs
           </h1>
 
-          <span className="bg-bgsecondary text-white px-4 py-2 rounded-full text-sm font-semibold">
+          <span className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white">
             {jobs.length} Jobs
           </span>
 

@@ -10,23 +10,25 @@ const FileList: React.FC<Props> = ({ files, onRemove }) => {
   if (!files.length) return null;
 
   return (
-    <div className="mt-6">
-      <h2 className="text-sm font-medium text-gray-700 mb-2">
+    <div className="mt-5">
+      <h2 className="mb-2 text-sm font-bold text-white/70">
         Selected Files
       </h2>
 
-      <ul className="space-y-2 max-h-40 overflow-auto">
+      <ul className="grid max-h-56 gap-2 overflow-auto">
         {files.map((file, idx) => (
           <li
             key={idx}
-            className="flex justify-between items-center text-sm bg-gray-50 px-3 py-2 rounded-md border"
+            className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm"
           >
-            <span>{file.name}</span>
+            <span className="truncate">{file.name}</span>
 
             {onRemove && (
               <button
+                type="button"
                 onClick={() => onRemove(idx)}
-                className="text-red-500 text-xs"
+                className="grid size-9 place-items-center rounded-xl text-cta transition hover:bg-cta/10 hover:text-cta"
+                aria-label={`Remove ${file.name}`}
               >
                 <IoMdClose size={20}/>
               </button>

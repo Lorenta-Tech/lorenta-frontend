@@ -10,24 +10,17 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({
   onChange,
 }) => {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm text-gray-600">{label}</span>
+    <div className="flex min-w-0 items-center justify-between gap-4">
+      <span className="min-w-0 text-sm font-semibold text-white/70">{label}</span>
 
       <button
         type="button"
         role="switch"
         aria-checked={checked}
         onClick={() => onChange(!checked)}
-        className={`w-12 h-6 flex items-center rounded-full p-1 transition-colors duration-200
-          ${checked ? "bg-blue-500" : "bg-gray-300"}
-          cursor-pointer
-        `}
+        className={`flex h-8 w-14 shrink-0 items-center rounded-full p-1 transition duration-200 ${checked ? "bg-primary" : "bg-white/25"}`}
       >
-        <div
-          className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200
-            ${checked ? "translate-x-6" : "translate-x-0"}
-          `}
-        />
+        <div className={`size-6 rounded-full bg-white shadow-sm transition duration-200 ${checked ? "translate-x-6" : "translate-x-0"}`} />
       </button>
     </div>
   );

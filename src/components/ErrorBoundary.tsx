@@ -16,7 +16,7 @@ function ErrorBoundary() {
   return (
     <div className="p-6">
       <h1 className="text-xl font-bold">Something went wrong</h1>
-      <pre className="mt-2 text-sm text-red-500">
+      <pre className="mt-2 text-sm text-cta">
         {(error as Error)?.message}
       </pre>
     </div>

@@ -29,9 +29,9 @@ function App() {
           <CartProvider>
             <Navbar />
             <AlertContainer />
-            <div className="px-5 py-4">
+            <main className="mx-auto w-full max-w-7xl flex-1 overflow-x-hidden px-4 py-8 md:px-6 md:py-10">
               <Outlet />
-            </div>
+            </main>
             <Footer />
           </CartProvider>
         </AlertProvider>
@@ -58,7 +58,6 @@ function App() {
             { path: "cart", element: <Cart /> },
             { path: "checkout", element: <Checkout /> },
             { path: "history", element: <History /> },
-            // ✅ FIXED: removed :id param
             { path: "order", element: <Order /> },
           ],
         },
@@ -67,7 +66,7 @@ function App() {
   ]);
 
   return (
-    <div className="min-h-100">
+    <div className="flex min-h-screen flex-col">
       <RouterProvider router={router} />
     </div>
   )

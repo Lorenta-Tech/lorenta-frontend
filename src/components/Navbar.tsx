@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { TiShoppingCart } from "react-icons/ti";
 import { FaUserAlt } from "react-icons/fa";
@@ -45,60 +45,60 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="lg:max-w-5xl md:max-w-lg m-auto">
+    <nav className="sticky top-0 z-40 border-b border-white/15 bg-darkbg/90 backdrop-blur-md">
 
-      <div className="flex w-full py-3 px-5 items-center justify-between">
+      <div className="mx-auto flex min-h-[68px] w-full max-w-7xl items-center justify-between gap-4 px-4 md:px-6">
 
         {/* Logo */}
         <Link
           to="/"
-          className="font-bold text-2xl text-textprimary"
+          className="text-xl font-extrabold text-white"
         >
-          Lorenta
+          Lorenta<span className="text-primary">.</span>
         </Link>
 
-        <div className="flex items-center gap-3 relative">
+        <div className="flex items-center gap-2">
 
           {/* =========================
               DESKTOP NAVBAR
           ========================== */}
           {loggedIn && (
-            <div className="hidden md:flex items-center gap-5">
+            <div className="hidden items-center gap-2 md:flex">
 
-              <Link
-                className="nav-link"
+              <NavLink
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/cart"
               >
                 Cart
-              </Link>
+              </NavLink>
 
-              <Link
-                className="nav-link"
+              <NavLink
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/upload"
               >
                 Upload
-              </Link>
+              </NavLink>
 
-              <Link
-                className="nav-link"
+              <NavLink
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/jobs"
               >
                 Active Jobs
-              </Link>
+              </NavLink>
 
-              <Link
-                className="nav-link"
+              <NavLink
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/history"
               >
                 History
-              </Link>
+              </NavLink>
 
-              <Link
-                className="nav-link text-red-500"
+              <NavLink
+                className="rounded-xl px-3 py-2 text-sm font-semibold text-cta transition hover:bg-cta/10"
                 to="/logout"
               >
                 Logout
-              </Link>
+              </NavLink>
 
             </div>
           )}
@@ -118,12 +118,13 @@ export default function Navbar() {
               MOBILE NAVBAR
           ========================== */}
           {loggedIn && (
-            <div className="flex md:hidden gap-4 items-center">
+            <div className="flex items-center gap-3 md:hidden">
 
               {/* Cart Button */}
               <Link
-                className="nav-btn flex items-center gap-1"
+                className="grid size-11 place-items-center rounded-xl bg-primary text-white transition hover:bg-primary/90"
                 to="/cart"
+                aria-label="Cart"
               >
                 <TiShoppingCart size={20} />
               </Link>
@@ -135,49 +136,52 @@ export default function Navbar() {
               >
 
                 <button
-                  className="nav-btn"
+                  type="button"
+                  className="grid size-11 place-items-center rounded-xl bg-primary text-white transition hover:bg-primary/90"
                   onClick={() =>
                     setMenuOpen((prev) => !prev)
                   }
+                  aria-label="Open navigation menu"
+                  aria-expanded={menuOpen}
                 >
                   <FaUserAlt size={18} />
                 </button>
 
                 {/* Dropdown */}
                 {menuOpen && (
-                  <div className="absolute right-0 mt-3 w-44 bg-white rounded-2xl shadow-xl py-2 z-50 border border-gray-100">
+                  <div className="absolute right-0 top-[calc(100%+0.625rem)] z-50 w-52 rounded-2xl border border-white/15 bg-white/5 p-2 shadow-xl">
 
-                    <Link
+                    <NavLink
                       to="/upload"
-                      className="block px-4 py-3 hover:bg-gray-100 transition"
+                      className={({ isActive }) => `flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                       onClick={() => setMenuOpen(false)}
                     >
                       Upload
-                    </Link>
+                    </NavLink>
 
-                    <Link
+                    <NavLink
                       to="/jobs"
-                      className="block px-4 py-3 hover:bg-gray-100 transition"
+                      className={({ isActive }) => `flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                       onClick={() => setMenuOpen(false)}
                     >
-                      Acive Jobs
-                    </Link>
+                      Active Jobs
+                    </NavLink>
 
-                    <Link
+                    <NavLink
                       to="/history"
-                      className="block px-4 py-3 hover:bg-gray-100 transition"
+                      className={({ isActive }) => `flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                       onClick={() => setMenuOpen(false)}
                     >
                       History
-                    </Link>
+                    </NavLink>
 
-                    <Link
+                    <NavLink
                       to="/logout"
-                      className="block px-4 py-3 text-red-500 hover:bg-gray-100 transition"
+                      className="flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-cta transition hover:bg-cta/10"
                       onClick={() => setMenuOpen(false)}
                     >
                       Logout
-                    </Link>
+                    </NavLink>
 
                   </div>
                 )}

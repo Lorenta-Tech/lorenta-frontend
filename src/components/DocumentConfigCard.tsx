@@ -26,7 +26,7 @@ const DocumentConfigCard: React.FC<Props> = ({ config, file, onView }) => {
   };
 
   return (
-    <div className="bg-white shadow-lg rounded-2xl p-4 flex flex-col gap-4">
+    <div className="grid min-w-0 gap-4 overflow-hidden rounded-2xl border border-white/15 bg-white/[0.04] p-4 shadow-sm sm:p-5">
       
       <CardHeader
         title={file.name}

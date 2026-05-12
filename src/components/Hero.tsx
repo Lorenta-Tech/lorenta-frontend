@@ -4,30 +4,32 @@ import { GiCheckMark } from "react-icons/gi";
 
 function Hero() {
     return (
-    <section className="w-full flex justify-center items-center md:min-h-screen">
-      <div className="lg:max-w-5xl max-w-lg mx-auto py-20 grid gap-10 items-center">
+    <section className="grid min-h-[calc(100vh-148px)] items-center py-10">
+      <div className="max-w-3xl">
         
         <div>
-          <h1 className="lg:text-8xl text-5xl font-bold text-textprimary leading-tight">
-            Print Anything. <br />
-            <span className="text-bgsecondary">Fast. Clean. Reliable.</span>
+          <p className="mb-4 inline-flex rounded-full bg-primary/15 px-3 py-1.5 text-sm font-bold text-primary">Campus printing made simple</p>
+
+          <h1 className="text-5xl font-extrabold leading-tight tracking-normal text-white md:text-7xl">
+            Print anything. <br />
+            <span className="text-primary">Fast, clean, reliable.</span>
           </h1>
 
-          <p className="mt-6 text-textprimary text-lg lg:text-2xl">
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-white/70">
             Upload your files, customize your prints, and get high-quality results 
-            without intervention or middlemen - ready for pickup.
+            without intervention or middlemen. Ready for pickup when you are.
           </p>
 
-          <div className="lg:mt-8 lg:text-2xl text-lg mt-6">
-            <Button>
-              <Link to="/upload">Upload & Print</Link>
-            </Button>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/upload">
+              <Button>Upload and print</Button>
+            </Link>
 
           </div>
 
-          <div className="mt-10 flex flex-row items-center gap-6 lg:text-lg text-sm text-gray-700">
-            <span className="flex gap-2 items-center"><GiCheckMark/> Instant Delivery</span>
-            <span className="flex gap-2 items-center"><GiCheckMark/> HD Quality</span>
+          <div className="mt-8 flex flex-wrap gap-5 text-sm font-semibold text-white/70">
+            <span className="inline-flex items-center gap-2"><GiCheckMark/> Quick pickup</span>
+            <span className="inline-flex items-center gap-2"><GiCheckMark/> High-quality output</span>
           </div>
         </div>
 

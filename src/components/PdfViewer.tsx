@@ -46,10 +46,10 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
 
   return (
     <div ref={containerRef} className="relative h-full w-full overflow-auto">
-      <div className="absolute top-4 right-4 z-10 bg-black/70 text-white px-3 py-1 rounded">
+      <div className="sticky top-3 z-10 ml-auto mr-3 w-max rounded-full bg-darkbg/85 px-3 py-1 text-sm font-bold text-white">
         {currentPage} / {numPages}
       </div>
-      <div ref={containerRef} className="h-full overflow-auto">
+      <div className="grid justify-items-center gap-4 py-4">
         <Document
           file={fileUrl}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
@@ -59,11 +59,9 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
               key={i}
               ref={(el) => {pageRefs.current[i] = el;}}
               data-page={i + 1}
-              className="flex justify-center mb-4"
+              className="max-w-full overflow-hidden rounded-xl bg-white/5 shadow-sm"
             >
-              <div className="bg-white shadow">
-                <Page pageNumber={i + 1} width={width-32} />
-              </div>
+              <Page pageNumber={i + 1} width={Math.max(260, width - 48)} />
             </div>
           ))}
         </Document>

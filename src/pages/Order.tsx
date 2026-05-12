@@ -19,22 +19,22 @@ function Order() {
 
   if (failed || !isPaid) {
     return (
-      <div className="min-h-screen bg-bgprimary flex items-center justify-center px-4">
+      <div className="grid min-h-[calc(100vh-170px)] place-items-center px-4">
 
-        <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md">
+        <div className="w-full max-w-md rounded-2xl border border-white/15 bg-white/5 p-8 shadow-sm">
 
           <div className="flex flex-col items-center text-center">
 
             <MdError
-              className="text-red-500"
+              className="text-cta"
               size={90}
             />
 
-            <h1 className="text-3xl font-bold mt-4">
+            <h1 className="mt-4 text-3xl font-extrabold text-white">
               Payment Failed
             </h1>
 
-            <p className="text-gray-500 mt-3">
+            <p className="mt-3 text-white/70">
               Something went wrong while processing payment.
             </p>
 
@@ -44,14 +44,14 @@ function Order() {
 
             <Link
               to="/upload"
-              className="w-full bg-red-500 text-white py-3 rounded-2xl text-center font-semibold"
+              className="w-full rounded-xl bg-cta py-3 text-center font-semibold text-darkbg transition hover:bg-cta/90"
             >
               Retry Upload
             </Link>
 
             <Link
               to="/"
-              className="w-full border border-gray-300 py-3 rounded-2xl text-center font-semibold"
+              className="w-full rounded-xl border border-white/15 py-3 text-center font-semibold text-white transition hover:border-primary hover:bg-primary/15 hover:text-primary"
             >
               Go Home
             </Link>
@@ -65,22 +65,22 @@ function Order() {
   }
 
   return (
-    <div className="min-h-screen bg-bgprimary flex items-center justify-center px-4">
+    <div className="grid min-h-[calc(100vh-170px)] place-items-center px-4">
 
-      <div className="bg-white shadow-2xl rounded-3xl p-8 w-full max-w-md">
+      <div className="w-full max-w-md rounded-2xl border border-white/15 bg-white/5 p-8 shadow-sm">
 
         <div className="flex flex-col items-center text-center">
 
           <MdCheckCircle
-            className="text-green-500"
+            className="text-primary"
             size={90}
           />
 
-          <h1 className="text-3xl font-bold mt-4">
+          <h1 className="mt-4 text-3xl font-extrabold text-white">
             Payment Successful
           </h1>
 
-          <p className="text-gray-500 mt-3 leading-relaxed">
+          <p className="mt-3 leading-relaxed text-white/70">
             Please collect your printouts using the OTP below.
           </p>
 
@@ -89,11 +89,11 @@ function Order() {
         {/* SESSION ID */}
         <div className="mt-8">
 
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-semibold text-white/70">
             Session ID
           </label>
 
-          <div className="mt-2 border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 text-sm font-semibold break-all">
+          <div className="mt-2 break-all rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-sm font-semibold text-white">
             {job.session_id}
           </div>
 
@@ -102,11 +102,11 @@ function Order() {
 
         <div className="mt-5">
 
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-semibold text-white/70">
             Print OTP
           </label>
 
-          <div className="mt-2 h-14 flex items-center justify-center rounded-xl border-2 border-dashed border-bgsecondary bg-blue-50 text-2xl tracking-[0.3em] font-bold text-bgsecondary">
+          <div className="mt-2 flex min-h-14 items-center justify-center rounded-xl border-2 border-dashed border-primary bg-primary/15 px-3 text-2xl font-extrabold tracking-[0.25em] text-primary">
             {job.token}
           </div>
 
@@ -115,11 +115,11 @@ function Order() {
         {/* AMOUNT */}
         <div className="mt-5">
 
-          <label className="text-sm text-gray-500">
+          <label className="text-sm font-semibold text-white/70">
             Total Amount
           </label>
 
-          <div className="mt-2 border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 font-semibold">
+          <div className="mt-2 rounded-xl border border-white/15 bg-white/5 px-4 py-3 font-semibold text-white">
             ₹ {job.total_amount}
           </div>
 
@@ -129,14 +129,14 @@ function Order() {
 
           <Link
             to="/history"
-            className="w-full bg-bgsecondary text-white py-3 rounded-2xl text-center font-semibold"
+            className="w-full rounded-xl bg-primary py-3 text-center font-semibold text-white transition hover:bg-primary/90"
           >
             View Orders
           </Link>
 
           <Link
             to="/upload"
-            className="w-full border border-gray-300 py-3 rounded-2xl text-center font-semibold"
+            className="w-full rounded-xl border border-white/15 py-3 text-center font-semibold text-white transition hover:border-primary hover:bg-primary/15 hover:text-primary"
           >
             Upload More Files
           </Link>

@@ -32,11 +32,14 @@ const Upload: React.FC = () => {
   };
 
   return (
-    <div className="bg-bgprimary flex flex-col gap-7 items-center justify-center mt-20">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-sm p-6">
-        <h1 className="text-xl font-semibold text-gray-900 mb-4">
-          Upload Files
-        </h1>
+    <div className="mx-auto mt-8 grid w-full max-w-3xl gap-5">
+      <div className="rounded-2xl border border-white/15 bg-white/5 p-6 shadow-sm">
+        <div className="mb-6 flex flex-col gap-2">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-normal text-white">Upload files</h1>
+            <p className="mt-2 text-white/70">Add PDFs, images, or text files to configure prints.</p>
+          </div>
+        </div>
 
         <Dropzone
           onFiles={addFiles}
@@ -47,7 +50,7 @@ const Upload: React.FC = () => {
         <FileList files={files} onRemove={removeFile} />
       </div>
 
-      <Button className="rounded-3xl text-lg" onClick={handleUpload}>
+      <Button className="w-full" onClick={handleUpload}>
         Upload files
       </Button>
     </div>

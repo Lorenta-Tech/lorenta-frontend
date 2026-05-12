@@ -28,10 +28,10 @@ const FileViewer: React.FC<FileViewerProps> = ({ file, convertedPdfUrl }) => {
   }
 
   if (file.type.startsWith("image/") && source) {
-    return <img src={source} className="max-w-full" />;
+    return <img src={source} className="mx-auto max-h-[74vh] w-auto rounded-xl shadow-sm" alt={file.name} />;
   }
 
-  return <div>Unsupported file</div>;
+  return <div className="grid min-h-80 place-items-center text-white/70">Unsupported file</div>;
 };
 
 export default FileViewer;

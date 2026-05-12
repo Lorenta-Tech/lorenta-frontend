@@ -57,29 +57,29 @@ const Checkout = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-lg bg-white shadow-xl rounded-2xl p-6 space-y-6">
+    <div className="grid min-h-[calc(100vh-170px)] place-items-center">
+      <div className="grid w-full max-w-lg gap-6 rounded-2xl border border-white/15 bg-white/5 p-8 shadow-sm">
 
-        <h1 className="text-2xl font-semibold">Checkout</h1>
+        <h1 className="text-3xl font-extrabold text-white">Checkout</h1>
 
-        <div className="border rounded-lg p-4 bg-gray-50">
-          <p className="text-gray-600">Total Amount</p>
-          <p className="text-3xl font-bold">₹{totalAmount}</p>
+        <div className="rounded-2xl border border-white/15 bg-white/5 p-4">
+          <p className="text-sm font-bold text-white/70">Total amount</p>
+          <p className="mt-1 text-4xl font-extrabold text-white">₹{totalAmount}</p>
         </div>
 
         {error && (
-          <div className="text-red-500 text-sm">
+          <div className="rounded-xl border border-cta/40 bg-cta/10 p-3 text-sm font-semibold text-cta">
             {error}
           </div>
         )}
 
-        <div className="w-full flex flex-col items-center gap-2">
+        <div className="grid gap-3">
           {loading && <Loader size={18} />}
 
           <Button
             onClick={handleCompleteOrder}
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2"
+            className="w-full"
           >
             {loading
               ? "Processing..."
@@ -87,7 +87,7 @@ const Checkout = () => {
           </Button>
 
           {loading && (
-            <p className="text-sm">Please wait while we redirect you to payment page...</p>
+            <p className="text-center text-sm text-white/70">Please wait while we redirect you to the payment page...</p>
           )}
         </div>
 

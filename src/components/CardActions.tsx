@@ -8,17 +8,19 @@ const CardActions: React.FC<CardActionsProps> = ({
   onApplyToAll,
 }) => {
   return (
-    <div className="flex justify-between items-center mt-2">
+    <div className="flex min-w-0 flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
       <button
+        type="button"
         onClick={onView}
-        className="text-sm border text-bgsecondary border-bgsecondary px-2 py-1 rounded"
+        className="min-h-10 w-full rounded-xl border border-primary/30 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary transition hover:border-primary hover:bg-primary/15 sm:w-auto"
       >
         View
       </button>
 
       <button
+        type="button"
         onClick={onApplyToAll}
-        className="text-sm text-bgtertiary border border-bgtertiary px-2 py-1 rounded"
+        className="min-h-10 w-full rounded-xl bg-cta px-4 py-2 text-sm font-semibold text-darkbg transition hover:bg-cta/90 sm:w-auto"
       >
         Apply to all
       </button>

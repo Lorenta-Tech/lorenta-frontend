@@ -61,18 +61,14 @@ const PageRangePicker: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium">Pages</label>
+    <div className="grid min-w-0 gap-2">
+      <label className="text-sm font-semibold text-white/70">Pages</label>
 
-      <div className="flex gap-2">
+      <div className="flex min-w-0 flex-wrap gap-2">
         {/* ALL */}
         <button
           type="button"
-          className={`px-3 py-1 rounded-lg border ${
-            mode === "all"
-              ? "bg-blue-500 text-white"
-              : "border-gray-500"
-          }`}
+          className={`min-h-10 rounded-xl border px-4 font-bold transition ${mode === "all" ? "border-primary bg-primary text-white" : "border-white/15 bg-white/5 text-white hover:border-primary hover:text-primary"}`}
           onClick={() => {
             setMode("all");
             setError(null);
@@ -85,11 +81,7 @@ const PageRangePicker: React.FC<Props> = ({
         {/* CUSTOM */}
         <button
           type="button"
-          className={`px-3 py-1 rounded-lg border ${
-            mode === "custom"
-              ? "bg-blue-500 text-white"
-              : "border-gray-500"
-          }`}
+          className={`min-h-10 rounded-xl border px-4 font-bold transition ${mode === "custom" ? "border-primary bg-primary text-white" : "border-white/15 bg-white/5 text-white hover:border-primary hover:text-primary"}`}
           onClick={() => {
             setMode("custom");
             if (mode === "all"){
@@ -106,9 +98,7 @@ const PageRangePicker: React.FC<Props> = ({
           <input
             value={input}
             placeholder="e.g. 1-5, 8"
-            className={`px-2 py-1 rounded-lg border ${
-              error ? "border-red-500" : "border-gray-400"
-            }`}
+            className={`min-h-11 min-w-0 rounded-xl border bg-white/5 px-3 transition focus:border-primary focus:ring-4 focus:ring-primary/20 ${error ? "border-cta" : "border-white/15"}`}
             onChange={(e) => {
               const val = e.target.value;
 
@@ -133,7 +123,7 @@ const PageRangePicker: React.FC<Props> = ({
           />
 
           {error && (
-            <p className="text-red-500 text-xs mt-1">
+            <p className="text-xs font-semibold text-cta">
               {error}
             </p>
           )}

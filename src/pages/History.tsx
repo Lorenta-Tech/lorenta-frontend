@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import OrderCard from "../components/OrderCard";
+import getOrderHistory from "../api/getOrderHistory";
 
 function History() {
 
@@ -17,34 +18,9 @@ function History() {
 
         setLoading(true);
 
-        const response = await fetch(
-  "http://localhost:17069/files/jobs/active",
-  {
-    method: "GET",
+        const jobs = await getOrderHistory();
 
-    credentials: "omit",
-
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-);
-
-        if (!response.ok) {
-
-          const text = await response.text();
-
-          console.error(text);
-
-          throw new Error("Failed to fetch orders");
-        }
-
-        const json = await response.json();
-
-        console.log(json);
-
-        // IMPORTANT FIX
-        setOrders(json.data.jobs || []);
+        setOrders(jobs);
 
       } catch (err) {
 
@@ -68,7 +44,7 @@ function History() {
   // =========================
   if (loading) {
     return (
-      <div className="mt-20 text-center text-lg text-gray-600">
+      <div className="mt-20 text-center text-lg text-white/70">
         Loading orders...
       </div>
     );
@@ -79,7 +55,7 @@ function History() {
   // =========================
   if (error) {
     return (
-      <div className="mt-20 text-center text-red-500 text-lg">
+      <div className="mt-20 text-center text-lg text-cta">
         {error}
       </div>
     );
@@ -90,18 +66,18 @@ function History() {
   // =========================
   if (orders.length === 0) {
     return (
-      <div className="mt-20 text-center text-gray-500 text-lg">
+      <div className="mt-20 text-center text-lg text-white/70">
         No active print jobs found
       </div>
     );
   }
 
   return (
-    <div className="mt-10 px-4">
+    <div className="mt-4">
 
-      <div className="max-w-4xl mx-auto">
+      <div className="mx-auto max-w-4xl">
 
-        <h1 className="text-4xl font-bold mb-8 text-textprimary">
+        <h1 className="mb-8 text-4xl font-extrabold text-white">
           Active Orders
         </h1>
 

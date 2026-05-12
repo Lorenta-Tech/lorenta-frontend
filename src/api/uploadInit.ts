@@ -29,7 +29,7 @@ export async function getUploadSession(metadata: UploadInitPayload[]): Promise<U
   console.log(JSON.stringify({files: metadata}));
   
 
-  const url="https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/upload/init";
+  const url="http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/files/upload/init";
   
   const response = await fetch(url, {
     method: "POST",

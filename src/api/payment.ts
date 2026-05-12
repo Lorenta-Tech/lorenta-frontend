@@ -6,7 +6,7 @@ export async function createRazorpayOrder(payload: {
   payload.amount_paise *= 100;
 
   const res = await fetch(
-    "https://unfearingly-heterozygous-brittny.ngrok-free.dev/payments/create",
+    "http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/payments/create",
     {
       method: "POST",
       headers: {
@@ -124,7 +124,7 @@ const pollPaymentStatus = async (
     try {
 
       const res = await fetch(
-        `http://localhost:17069/payments/status/${session_id}`,
+        `http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/payments/status/${session_id}`,
         {
           method: "GET",
           headers: {

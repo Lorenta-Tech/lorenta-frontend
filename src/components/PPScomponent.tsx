@@ -14,23 +14,21 @@ const PPScomponent : React.FC<PPSProps> = ({
 })=>{
   
   return (
-    <div className="flex items-center justify-between">
-      <label className="text-sm text-gray-600">{ label }</label>
+    <div className="flex min-w-0 items-center justify-between gap-4">
+      <label className="min-w-0 text-sm font-semibold text-white/70">{ label }</label>
 
-      <div className="flex gap-2">
+      <div className="flex shrink-0 gap-2">
         <button
-          className={`px-3 py-1 rounded-lg border border-gray-300 ${
-            perSheet==1 ? "bg-bgsecondary text-white" : ""
-          }`}
+          type="button"
+          className={`min-h-10 rounded-xl border px-4 font-bold transition ${perSheet === 1 ? "border-primary bg-primary text-white" : "border-white/15 bg-white/5 text-white hover:border-primary hover:text-primary"}`}
           onClick={()=>onChange(1)}
         >
           1
         </button>
 
         <button
-          className={`px-3 py-1 rounded-lg border border-gray-400 ${
-            perSheet==2? "bg-bgsecondary text-white" : ""
-          }`}
+          type="button"
+          className={`min-h-10 rounded-xl border px-4 font-bold transition ${perSheet === 2 ? "border-primary bg-primary text-white" : "border-white/15 bg-white/5 text-white hover:border-primary hover:text-primary"}`}
           onClick={()=>onChange(2)}
         >
           2

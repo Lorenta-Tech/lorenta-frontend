@@ -1,4 +1,4 @@
-// db.ts
+
 import { openDB } from "idb";
 
 const DB_NAME = "printflow-db";

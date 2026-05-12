@@ -7,13 +7,15 @@ type CardHeaderProps = {
 
 const CardHeader: React.FC<CardHeaderProps> = ({ title, onRemove }) => {
   return (
-    <div className="flex justify-between items-center">
-      <h3 className="font-semibold text-lg truncate">{title}</h3>
+    <div className="flex min-w-0 items-center justify-between gap-3">
+      <h3 className="min-w-0 truncate text-base font-bold text-white">{title}</h3>
       <button
+        type="button"
         onClick={onRemove}
-        className="text-gray-500 hover:text-red-700"
+        className="grid size-10 shrink-0 place-items-center rounded-xl text-white/60 transition hover:bg-cta/10 hover:text-cta"
+        aria-label={`Remove ${title}`}
       >
-        <IoMdClose size="30" />
+        <IoMdClose size={22} />
       </button>
     </div>
   );

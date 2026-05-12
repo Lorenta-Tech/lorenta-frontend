@@ -40,22 +40,23 @@ const CopiesStepper: React.FC<Props> = ({
   };
 
   return (
-    <div className="flex flex-col gap-1">
-      <label className="text-sm font-medium">Copies</label>
+    <div className="grid min-w-0 gap-2">
+      <label className="text-sm font-semibold text-white/70">Copies</label>
 
-      <div className="flex items-center gap-2">
+      <div className="grid w-max max-w-full grid-cols-[44px_minmax(64px,72px)_44px] items-center gap-2">
         <button
           type="button"
-          className="px-3 py-1 border border-gray-400 rounded-lg"
+          className="min-h-10 rounded-xl border border-white/15 bg-white/5 font-bold transition hover:border-primary hover:text-primary disabled:opacity-50"
           onClick={decrease}
           disabled={value <= min}
+          aria-label="Decrease copies"
         >
           -
         </button>
 
         <input
           type="number"
-          className="w-16 text-center border border-gray-400 rounded-lg py-1"
+          className="min-h-11 rounded-xl border border-white/15 bg-white/5 px-3 text-center transition focus:border-primary focus:ring-4 focus:ring-primary/20"
           value={inputValue}
           min={min}
           max={max}
@@ -67,9 +68,10 @@ const CopiesStepper: React.FC<Props> = ({
 
         <button
           type="button"
-          className="px-3 py-1 border border-gray-400 rounded-lg"
+          className="min-h-10 rounded-xl border border-white/15 bg-white/5 font-bold transition hover:border-primary hover:text-primary disabled:opacity-50"
           onClick={increase}
           disabled={value >= max}
+          aria-label="Increase copies"
         >
           +
         </button>

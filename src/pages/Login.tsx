@@ -45,22 +45,16 @@ function Login() {
   };
 
   return (
-    <div className="min-h-[80vh] flex justify-center items-center px-5">
-
-      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-10">
-
-        <div className="flex flex-col items-center">
-
-          <h1 className="text-4xl font-bold text-textprimary text-center">
+    <div className="grid min-h-[calc(100vh-170px)] place-items-center px-4">
+      <div className="w-full max-w-md rounded-2xl border border-white/15 bg-white/5 p-8 shadow-sm">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <h1 className="text-4xl font-extrabold text-white">
             Welcome to Lorenta
           </h1>
-
-          <p className="text-gray-500 mt-3 text-center">
+          <p className="text-white/70">
             Continue with Google to access your account
           </p>
-
-          <div className="mt-10 w-full flex justify-center">
-
+          <div className="w-full flex justify-center">
             <GoogleLogin
               onSuccess={handleSuccess}
               onError={() => {
@@ -71,20 +65,15 @@ function Login() {
               shape="pill"
               text="continue_with"
             />
-
           </div>
-
           <Link
             to="/"
-            className="mt-8 text-sm underline text-gray-500 hover:text-black transition"
+            className="text-sm font-semibold text-white/70 transition hover:text-primary"
           >
             Go to home
           </Link>
-
         </div>
-
       </div>
-
     </div>
   );
 }

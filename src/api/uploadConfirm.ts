@@ -5,7 +5,7 @@ async function uploadConfirm(
   files: DocumentConfig[],
 ): Promise<string> {
 
-  const url = "https://unfearingly-heterozygous-brittny.ngrok-free.dev/files/upload/confirm";
+  const url = "http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/files/upload/confirm";
 
   const response = await fetch(url, {
     method: "POST",
