@@ -11,8 +11,7 @@ export async function apiFetch<T = any>(
   options: ApiOptions = {}
 ): Promise<T> {
 
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGNkYzBiNTAtZGMzMC00ZmZiLTkwM2ItODA1YzNlMTNiM2Y1IiwiZW1haWwiOiJqZXZpdGFwZWFybEBnbWFpbC5jb20iLCJuYW1lIjoiSmV2aXRhIFBlYXJsIiwiZXhwIjoxNzgxMjE2MTUwLCJpYXQiOjE3Nzg2MjQxNTB9.7xHT3XWsVyyRHWGhDxa-wNDwgNBW0qT0cDEhG_qQ6T8";
-
+  const token = localStorage.getItem("token");
   const isFormData = options.body instanceof FormData;
 
   const headers: HeadersInit = {

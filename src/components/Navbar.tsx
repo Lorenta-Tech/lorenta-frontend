@@ -59,9 +59,7 @@ export default function Navbar() {
 
         <div className="flex items-center gap-2">
 
-          {/* =========================
-              DESKTOP NAVBAR
-          ========================== */}
+          {/* DESKTOP NAVBAR */}
           {loggedIn && (
             <div className="hidden items-center gap-2 md:flex">
 
@@ -103,9 +101,7 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* =========================
-              LOGIN BUTTON
-          ========================== */}
+          {/* LOGIN BUTTON */}
           {!loggedIn && (
             <Button
               onClick={() => navigate("/login")}
@@ -114,9 +110,7 @@ export default function Navbar() {
             </Button>
           )}
 
-          {/* =========================
-              MOBILE NAVBAR
-          ========================== */}
+          {/* MOBILE NAVBAR */}
           {loggedIn && (
             <div className="flex items-center gap-3 md:hidden">
 
@@ -149,39 +143,63 @@ export default function Navbar() {
 
                 {/* Dropdown */}
                 {menuOpen && (
-                  <div className="absolute right-0 top-[calc(100%+0.625rem)] z-50 w-52 rounded-2xl border border-white/15 bg-white/5 p-2 shadow-xl">
+                  <div className="absolute right-0 top-[calc(100%+0.625rem)] z-50 w-56 overflow-hidden rounded-2xl border border-white/10 bg-[#241c35] shadow-2xl">
 
-                    <NavLink
-                      to="/upload"
-                      className={({ isActive }) => `flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Upload
-                    </NavLink>
+                    <div className="flex flex-col p-2">
 
-                    <NavLink
-                      to="/jobs"
-                      className={({ isActive }) => `flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Active Jobs
-                    </NavLink>
+                      <NavLink
+                        to="/upload"
+                        className={({ isActive }) =>
+                          `flex min-h-11 items-center rounded-xl px-4 text-sm font-medium transition ${
+                            isActive
+                              ? "bg-[#7e49f2] text-white"
+                              : "text-white/75 hover:bg-white/5 hover:text-white"
+                          }`
+                        }
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Upload
+                      </NavLink>
 
-                    <NavLink
-                      to="/history"
-                      className={({ isActive }) => `flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      History
-                    </NavLink>
+                      <NavLink
+                        to="/jobs"
+                        className={({ isActive }) =>
+                          `flex min-h-11 items-center rounded-xl px-4 text-sm font-medium transition ${
+                            isActive
+                              ? "bg-[#7e49f2] text-white"
+                              : "text-white/75 hover:bg-white/5 hover:text-white"
+                          }`
+                        }
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Active Jobs
+                      </NavLink>
 
-                    <NavLink
-                      to="/logout"
-                      className="flex min-h-10 items-center rounded-xl px-3 text-sm font-semibold text-cta transition hover:bg-cta/10"
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      Logout
-                    </NavLink>
+                      <NavLink
+                        to="/history"
+                        className={({ isActive }) =>
+                          `flex min-h-11 items-center rounded-xl px-4 text-sm font-medium transition ${
+                            isActive
+                              ? "bg-[#7e49f2] text-white"
+                              : "text-white/75 hover:bg-white/5 hover:text-white"
+                          }`
+                        }
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        History
+                      </NavLink>
+
+                      <div className="my-2 border-t border-white/10" />
+
+                      <NavLink
+                        to="/logout"
+                        className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium text-[#f2cb07] transition hover:bg-[#f2cb07]/10"
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        Logout
+                      </NavLink>
+
+                    </div>
 
                   </div>
                 )}
