@@ -1,26 +1,19 @@
+import apiFetch from "./api";
+
 export async function createRazorpayOrder(payload: {
   session_id: string;
   amount_paise: number;
 }) {
 
-  payload.amount_paise *= 100;
+  const formattedPayload = {
+    ...payload,
+    amount_paise: payload.amount_paise * 100,
+  };
 
-  const res = await fetch(
-    "http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/payments/create",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error("Failed to create Razorpay order");
-  }
-
-  return res.json();
+  return apiFetch("/payments/create", {
+    method: "POST",
+    body: JSON.stringify(formattedPayload),
+  });
 }
 
 export const openRazorpay = (
@@ -42,7 +35,7 @@ export const openRazorpay = (
 
       amount: amount_paise,
 
-      currency: currency,
+      currency,
 
       name: "Lorenta Tech",
 
@@ -59,46 +52,30 @@ export const openRazorpay = (
         session_id,
       },
 
-      // =========================
-      // PAYMENT SUCCESS
-      // =========================
       handler: async function () {
-
-        console.log("✅ Razorpay handler fired - payment success");
 
         try {
 
           const job = await pollPaymentStatus(session_id);
 
-          console.log("✅ Poll completed. JOB:", job);
-          console.log("✅ JOB STATUS:", job?.status);
-
           resolve(job);
 
-        } catch (err) {
+        } catch (error) {
 
-          console.log("❌ pollPaymentStatus threw error:", err);
-
-          reject(err);
-
+          reject(error);
         }
       },
 
-      // =========================
-      // USER CLOSED MODAL
-      // =========================
       modal: {
 
         ondismiss: function () {
-
-          console.log("❌ Payment popup closed by user");
 
           reject(new Error("Payment cancelled"));
         },
       },
 
       theme: {
-        color: "#00ff87",
+        color: "#7e49f2",
       },
     };
 
@@ -108,9 +85,6 @@ export const openRazorpay = (
   });
 };
 
-// =========================
-// POLL PAYMENT STATUS
-// =========================
 const pollPaymentStatus = async (
   session_id: string
 ) => {
@@ -118,65 +92,27 @@ const pollPaymentStatus = async (
   const MAX_RETRIES = 15;
 
   for (let i = 0; i < MAX_RETRIES; i++) {
+    console.log("Sending req")
 
-    console.log(`🔄 Polling attempt ${i + 1} of ${MAX_RETRIES} for session: ${session_id}`);
+    const result = await apiFetch<any>(
+      `/payments/status/${session_id}`
+    );
 
-    try {
+    const job = result?.data?.job;
 
-      const res = await fetch(
-        `http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/payments/status/${session_id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+    console.log(job);
 
-      console.log(`📡 Poll response status: ${res.status}`);
+    const isPaid =
+      String(job?.status).toLowerCase() === "paid";
 
-      if (!res.ok) {
-        console.log(`❌ Poll response not OK: ${res.status}`);
-        throw new Error("Failed to fetch payment status");
-      }
-
-      const result = await res.json();
-
-      console.log("📦 Full poll result:", JSON.stringify(result, null, 2));
-
-      const job = result?.data?.job;
-
-      console.log("📦 Job object:", job);
-      console.log("📦 Job status raw:", job?.status);
-      console.log("📦 Job status lowercased:", String(job?.status).toLowerCase());
-
-      const isPaid =
-        String(job?.status).toLowerCase() === "paid";
-
-      console.log("💰 isPaid:", isPaid);
-
-      // =========================
-      // PAYMENT CONFIRMED
-      // =========================
-      if (isPaid) {
-
-        console.log("✅ Payment confirmed! Returning job.");
-
-        return job;
-      }
-
-      console.log(`⏳ Not paid yet, waiting 2s before retry...`);
-
-      // wait 2 seconds
-      await new Promise((r) => setTimeout(r, 2000));
-
-    } catch (err) {
-
-      console.log(`❌ Error during poll attempt ${i + 1}:`, err);
-
-      throw err;
+    if (isPaid) {
+      return job;
     }
+
+    await new Promise((r) => setTimeout(r, 2000));
   }
 
-  throw new Error("Timeout waiting for payment confirmation");
+  throw new Error(
+    "Timeout waiting for payment confirmation"
+  );
 };

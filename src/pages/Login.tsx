@@ -1,6 +1,8 @@
 import { GoogleLogin } from "@react-oauth/google";
+import { CredentialResponse } from "@react-oauth/google";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import apiFetch from "../api/api";
 
 function Login() {
 
@@ -8,38 +10,41 @@ function Login() {
 
   const { login } = useAuth();
 
-  const handleSuccess = async (credentialResponse: any) => {
+  const handleSuccess = async (
+    credentialResponse: CredentialResponse
+  ) => {
 
     try {
 
-      const response = await fetch(
-        "http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/auth/google",
+      if (!credentialResponse.credential) {
+        throw new Error("Google credential missing");
+      }
+
+      const data = await apiFetch<any>(
+        "/auth/google",
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          auth: false,
           body: JSON.stringify({
             id_token: credentialResponse.credential,
           }),
         }
       );
 
-      if (!response.ok) {
-        throw new Error("Authentication failed");
+      const token = data?.data?.token;
+
+      if (!token) {
+        throw new Error("No auth token received");
       }
 
-      const data = await response.json();
-
-      console.log(data);
-
-      login(credentialResponse.credential);
+      // Store backend JWT
+      login(token);
 
       navigate("/upload");
 
     } catch (error) {
 
-      console.error(error);
+      console.error("Google Login Error:", error);
 
     }
   };
@@ -48,13 +53,17 @@ function Login() {
     <div className="grid min-h-[calc(100vh-170px)] place-items-center px-4">
       <div className="w-full max-w-md rounded-2xl border border-white/15 bg-white/5 p-8 shadow-sm">
         <div className="flex flex-col items-center gap-4 text-center">
+
           <h1 className="text-4xl font-extrabold text-white">
             Welcome to Lorenta
           </h1>
+
           <p className="text-white/70">
             Continue with Google to access your account
           </p>
+
           <div className="w-full flex justify-center">
+
             <GoogleLogin
               onSuccess={handleSuccess}
               onError={() => {
@@ -65,13 +74,16 @@ function Login() {
               shape="pill"
               text="continue_with"
             />
+
           </div>
+
           <Link
             to="/"
             className="text-sm font-semibold text-white/70 transition hover:text-primary"
           >
             Go to home
           </Link>
+
         </div>
       </div>
     </div>

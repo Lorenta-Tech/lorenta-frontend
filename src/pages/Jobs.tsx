@@ -1,58 +1,29 @@
 import { useEffect, useState } from "react";
-import OrderCard from "../components/OrderCard.tsx";
+
+import OrderCard from "../components/OrderCard";
+
+import apiFetch from "../api/api";
 
 function Jobs() {
 
   const [jobs, setJobs] = useState<any[]>([]);
-
   const [loading, setLoading] = useState(true);
-
   const [error, setError] = useState("");
 
   useEffect(() => {
-
     const fetchJobs = async () => {
-
       try {
-
         setLoading(true);
-
-        const response = await fetch(
-          "http://localhost:17069/files/jobs/active",
-          {
-            method: "GET",
-
-            credentials: "omit",
-
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+        setError("");
+        const json = await apiFetch<any>(
+          "/files/jobs/active"
         );
-
-        if (!response.ok) {
-
-          const text = await response.text();
-
-          console.error(text);
-
-          throw new Error("Failed to fetch jobs");
-        }
-
-        const json = await response.json();
-
-        console.log(json);
-
-        setJobs(json.data.jobs || []);
+        setJobs(json?.data?.jobs || []);
 
       } catch (err) {
-
         console.error(err);
-
         setError("Failed to load active jobs");
-
       } finally {
-
         setLoading(false);
       }
     };
@@ -61,9 +32,6 @@ function Jobs() {
 
   }, []);
 
-  // =========================
-  // Loading
-  // =========================
   if (loading) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
@@ -72,9 +40,6 @@ function Jobs() {
     );
   }
 
-  // =========================
-  // Error
-  // =========================
   if (error) {
     return (
       <div className="mt-20 text-center text-lg text-cta">
@@ -83,9 +48,6 @@ function Jobs() {
     );
   }
 
-  // =========================
-  // Empty
-  // =========================
   if (jobs.length === 0) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
@@ -99,7 +61,7 @@ function Jobs() {
 
       <div className="mx-auto max-w-5xl">
 
-        <div className="flex items-center justify-between mb-8">
+        <div className="mb-8 flex items-center justify-between">
 
           <h1 className="text-4xl font-extrabold text-white">
             Active Jobs

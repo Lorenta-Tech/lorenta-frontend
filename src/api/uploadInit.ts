@@ -1,5 +1,6 @@
 import { UploadedFile, DocumentConfig } from "../types";
 import uploadConfirm from "./uploadConfirm";
+import apiFetch from "./api";
 
 type CartItem = {
   file: UploadedFile;
@@ -25,60 +26,74 @@ type UploadInitResponse = {
   };
 };
 
-export async function getUploadSession(metadata: UploadInitPayload[]): Promise<UploadInitResponse["data"]> {
-  console.log(JSON.stringify({files: metadata}));
-  
+export async function getUploadSession(
+  metadata: UploadInitPayload[]
+): Promise<UploadInitResponse["data"]> {
 
-  const url="http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/files/upload/init";
-  
-  const response = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "omit",
-    body: JSON.stringify({files: metadata}),
-  });
+  const json = await apiFetch<UploadInitResponse>(
+    "/files/upload/init",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        files: metadata,
+      }),
+    }
+  );
 
-  if (!response.ok) {
-    throw new Error(`Upload init failed: ${await response.text()}`);
-  }
-
-
-  const json: UploadInitResponse = await response.json();
   return json.data;
 }
 
-export async function uploadCart(items: CartItem[]): Promise<any> { 
+export async function uploadCart(
+  items: CartItem[]
+): Promise<any> {
+
   const metadata = items.map(({ file }) => ({
     file_name: file.name,
-    content_type: file.type || getMimeTypeFromName(file.name),
+    content_type:
+      file.type || getMimeTypeFromName(file.name),
   }));
 
-  const response =  await getUploadSession(metadata);
-  console.log("S3 keys received")
-  const session_id = response.session_id
+  const response = await getUploadSession(metadata);
+
+  const session_id = response.session_id;
+
   const DBfiles = response.files;
 
-  const fileMap = new Map(DBfiles.map(f => [f.file_name, f]));
+  const fileMap = new Map(
+    DBfiles.map((f) => [f.file_name, f])
+  );
+
   await Promise.all(
     items.map(async ({ file, config }) => {
-    const match = fileMap.get(file.name);
 
-    if (!match) {
-      throw new Error(`Missing upload URL for ${file.name}`);
-    }
+      const match = fileMap.get(file.name);
 
-    config.file_id = match.file_id;
-    return uploadToS3(file.content as File, match.upload_url);
+      if (!match) {
+        throw new Error(
+          `Missing upload URL for ${file.name}`
+        );
+      }
+
+      config.file_id = match.file_id;
+
+      return uploadToS3(
+        file.content as File,
+        match.upload_url
+      );
     })
   );
 
-  console.log("Files uploaded to S3")
-  return uploadConfirm(session_id, items.map(item => item.config))
-
+  return uploadConfirm(
+    session_id,
+    items.map((item) => item.config)
+  );
 }
 
+async function uploadToS3(
+  file: File,
+  url: string
+) {
 
-async function uploadToS3(file: File, url: string) {
   const res = await fetch(url, {
     method: "PUT",
     body: file,
@@ -89,15 +104,28 @@ async function uploadToS3(file: File, url: string) {
   }
 }
 
+function getMimeTypeFromName(
+  name: string
+): string {
 
-function getMimeTypeFromName(name: string): string {
-  const ext = name.split(".").pop()?.toLowerCase();
+  const ext = name
+    .split(".")
+    .pop()
+    ?.toLowerCase();
 
   switch (ext) {
-    case "png": return "image/png";
+
+    case "png":
+      return "image/png";
+
     case "jpg":
-    case "jpeg": return "image/jpeg";
-    case "pdf": return "application/pdf";
-    default: return "application/octet-stream";
+    case "jpeg":
+      return "image/jpeg";
+
+    case "pdf":
+      return "application/pdf";
+
+    default:
+      return "application/octet-stream";
   }
 }
