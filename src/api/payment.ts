@@ -38,7 +38,7 @@ export const openRazorpay = (
 
     const options = {
 
-      key: "rzp_test_SmQncbn8cZ6dd9",
+      key: import.meta.env.VITE_RAZORPAY_KEY,
 
       amount: amount_paise,
 
