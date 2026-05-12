@@ -13,7 +13,7 @@ function Login() {
     try {
 
       const response = await fetch(
-        "https://unfearingly-heterozygous-brittny.ngrok-free.dev/auth/google",
+        "http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com/auth/google",
         {
           method: "POST",
           headers: {
