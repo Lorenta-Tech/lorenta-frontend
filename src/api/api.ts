@@ -1,6 +1,6 @@
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  "http://ec2-13-207-2-90.ap-south-1.compute.amazonaws.com";
+  "https://kiosk-server-production.duckdns.org/";
 
 type ApiOptions = RequestInit & {
   auth?: boolean;
