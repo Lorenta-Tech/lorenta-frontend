@@ -1,6 +1,6 @@
 const BASE_URL =
   import.meta.env.VITE_API_BASE_URL ||
-  "https://kiosk-server-production.duckdns.org/";
+  "https://kiosk-server-production.duckdns.org";
 
 type ApiOptions = RequestInit & {
   auth?: boolean;
