@@ -86,6 +86,7 @@ function History() {
           {orders.map((order) => {
 
             const {
+              token ,
               session_id,
               status,
               total_amount,
@@ -98,6 +99,7 @@ function History() {
               <li key={session_id}>
 
                 <OrderCard
+                token={token}     
                   totalpages={total_sheets}
                   price={total_amount}
                   orderDate={created_at}
