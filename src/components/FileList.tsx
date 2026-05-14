@@ -21,7 +21,11 @@ const FileList: React.FC<Props> = ({ files, onRemove }) => {
             key={idx}
             className="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm"
           >
-            <span className="truncate">{file.name}</span>
+            <span className="truncate">
+              {file.name.length > 20
+                ? `${file.name.slice(0, 20)}...`
+                : file.name}
+            </span>
 
             {onRemove && (
               <button
