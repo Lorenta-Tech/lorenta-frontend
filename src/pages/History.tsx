@@ -78,7 +78,7 @@ function History() {
       <div className="mx-auto max-w-4xl">
 
         <h1 className="mb-8 text-4xl font-extrabold text-white">
-          Active Orders
+          Order History
         </h1>
 
         <ul className="flex flex-col gap-7">

@@ -64,35 +64,35 @@ export default function Navbar() {
             <div className="hidden items-center gap-2 md:flex">
 
               <NavLink
-                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-lg font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/cart"
               >
                 Cart
               </NavLink>
 
               <NavLink
-                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-lg font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/upload"
               >
                 Upload
               </NavLink>
 
               <NavLink
-                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-lg font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/jobs"
               >
                 Active Jobs
               </NavLink>
 
               <NavLink
-                className={({ isActive }) => `rounded-xl px-3 py-2 text-sm font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
+                className={({ isActive }) => `rounded-xl px-3 py-2 text-lg font-semibold transition ${isActive ? "bg-primary/15 text-primary" : "text-white/70 hover:bg-primary/15 hover:text-primary"}`}
                 to="/history"
               >
                 History
               </NavLink>
 
               <NavLink
-                className="rounded-xl px-3 py-2 text-sm font-semibold text-cta transition hover:bg-cta/10"
+                className="rounded-xl px-3 py-2 text-lg font-semibold text-cta transition hover:bg-cta/10"
                 to="/logout"
               >
                 Logout

@@ -1,5 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { CredentialResponse } from "@react-oauth/google";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import apiFetch from "../api/api";
@@ -7,7 +8,7 @@ import apiFetch from "../api/api";
 function Login() {
 
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
   const handleSuccess = async (
@@ -19,7 +20,7 @@ function Login() {
       if (!credentialResponse.credential) {
         throw new Error("Google credential missing");
       }
-
+      setLoading(true);
       const data = await apiFetch<any>(
         "/auth/google",
         {
@@ -39,7 +40,7 @@ function Login() {
 
       // Store backend JWT
       login(token);
-
+      setLoading(false);
       navigate("/upload");
 
     } catch (error) {
@@ -61,29 +62,39 @@ function Login() {
           <p className="text-white/70">
             Continue with Google to access your account
           </p>
+          <div>
+            {
+              loading ? (
+                <div>
+                  Redirecting to next page...
+                </div>
+              ) : (
+                <div>
+                  <div className="w-full flex justify-center">
+                    <GoogleLogin
+                      onSuccess={handleSuccess}
+                      onError={() => {
+                        console.log("Login Failed");
+                      }}
+                      theme="filled_blue"
+                      size="large"
+                      shape="pill"
+                      text="continue_with"
+                    />
+                  </div>
 
-          <div className="w-full flex justify-center">
-
-            <GoogleLogin
-              onSuccess={handleSuccess}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-              theme="filled_blue"
-              size="large"
-              shape="pill"
-              text="continue_with"
-            />
-
+                  <Link
+                    to="/"
+                    className="text-sm font-semibold text-white/70 transition hover:text-primary"
+                  >
+                    Go to home
+                  </Link>
+                </div>
+              )
+            }
           </div>
 
-          <Link
-            to="/"
-            className="text-sm font-semibold text-white/70 transition hover:text-primary"
-          >
-            Go to home
-          </Link>
-
+          
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ function Jobs() {
         setJobs(json?.data?.jobs || []);
       } catch (err) {
         console.error(err);
-        setError("Failed to load active jobs");
+        setError("Failed to load active orders");
       } finally {
         setLoading(false);
       }
@@ -29,7 +29,7 @@ function Jobs() {
   if (loading) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
-        Loading active jobs...
+        Loading active orders...
       </div>
     );
   }
@@ -43,7 +43,7 @@ function Jobs() {
   if (jobs.length === 0) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
-        No active jobs found
+        No active orders found
       </div>
     );
   }
@@ -52,7 +52,7 @@ function Jobs() {
     <div className="mt-4">
       <div className="mx-auto max-w-5xl">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-4xl font-extrabold text-white">Active Jobs</h1>
+          <h1 className="text-4xl font-extrabold text-white">Active Orders</h1>
           <span className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-white">
             {jobs.length} Jobs
           </span>
@@ -63,7 +63,7 @@ function Jobs() {
             const {
               session_id,
               status,
-              token,           // ← destructure token
+              token,           
               total_amount,
               total_sheets,
               created_at,
@@ -73,7 +73,7 @@ function Jobs() {
             return (
               <li key={session_id}>
                 <OrderCard
-                  token={token}          // ← pass token
+                  token={token} 
                   totalpages={total_sheets}
                   price={total_amount}
                   orderDate={created_at}

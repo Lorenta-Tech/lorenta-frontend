@@ -114,9 +114,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         config: {
           ...item.config,
           copies: source.copies,
-          pagesPerSheet: source.page_layout,
-          isColor: source.printing_mode,
-          duplex: source.printing_side,
+          page_layout: source.page_layout,
+          printing_mode: source.printing_mode,
+          printing_side: source.printing_side,
         },
       }))
     );

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import DocumentConfigCard from "../components/DocumentConfigCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ViewModal from "../components/ViewModal";
 import Button from "../components/Button";
 import { UploadedFile } from "../types";
@@ -13,12 +13,24 @@ function Cart() {
   const [viewerFile, setViewerFile] = useState<UploadedFile | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const calculate = async () => {
-    setLoading(true);
-    const result = await calculateAmount({ items });
-    setTotalAmount(result);
-    setLoading(false);
-  };
+  useEffect(() => {
+    const updateAmount = async () => {
+      if (!items.length) return;
+
+      setLoading(true);
+
+      try {
+        const result = await calculateAmount({ items });
+        setTotalAmount(result);
+      } catch (error) {
+        console.error("Failed to calculate amount:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    updateAmount();
+  }, [items, setTotalAmount]);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -70,20 +82,15 @@ function Cart() {
         onClose={() => setViewerFile(null)}
       />
 
-      <div className="sticky bottom-4 z-10 -mx-1 flex min-w-0 flex-col justify-center gap-3 border-t border-white/10 bg-darkbg/95 px-1 py-4 backdrop-blur sm:mx-0 sm:flex-row sm:rounded-2xl sm:border sm:border-white/15 sm:p-3">
-        <Button
-          className="w-full sm:w-auto"
-          onClick={async () => {
-            await calculate();
-            scrollToTop();
-          }}
-          disabled={loading}
-        >
-          {loading ? "Calculating..." : "Calculate amount"}
-        </Button>
+      <div className="sticky bottom-4 z-10 mx-1 flex min-w-0 flex-col justify-center gap-3 bg-darkbg/95 px-1 py-4 backdrop-blur sm:mx-0 sm:flex-row sm:p-3">
+        {loading && (
+          <p className="text-white/70"> Calculating amount...</p>
+        )}
 
         <Link to="/upload" className="min-w-0">
-          <Button className="w-full border border-white/15 bg-white/5 text-primary hover:border-primary hover:bg-primary/15 sm:w-auto">Upload more</Button>
+          <Button className="w-full border border-white/15 bg-white/5 text-lg text-primary hover:border-primary hover:bg-primary/15 sm:w-auto">
+            Upload more
+          </Button>
         </Link>
       </div>
     </div>
