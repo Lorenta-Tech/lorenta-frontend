@@ -46,13 +46,13 @@ const Dropzone: React.FC<Props> = ({
       <p>
         or <span className="font-bold text-primary">select files</span>
       </p>
-      <p className="text-sm text-white/70">Images, PDFs, and text files are supported</p>
+      <p className="text-sm text-white/70">Only PDFs are supported</p>
       
       <input
         type="file"
         multiple
         ref={fileInputRef}
-        accept="image/*,.pdf,.txt"
+        accept=".pdf"
         onChange={(e) => {
           const files = e.target.files;
           if (!files || files.length === 0) return;

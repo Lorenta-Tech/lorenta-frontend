@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import uploadToCart from "../api/uploadToCart";
 import Button from "../components/Button";
 import Dropzone from "../components/Dropzone";
@@ -37,7 +37,7 @@ const Upload: React.FC = () => {
         <div className="mb-6 flex flex-col gap-2">
           <div>
             <h1 className="text-3xl font-extrabold tracking-normal text-white">Upload files</h1>
-            <p className="mt-2 text-white/70">Add PDFs, images, or text files to configure prints.</p>
+            <p className="mt-2 text-white/70">Add PDFs to configure prints.</p>
           </div>
         </div>
 
@@ -46,6 +46,20 @@ const Upload: React.FC = () => {
           dragActive={dragActive}
           setDragActive={setDragActive}
         />
+        <div className="rounded-2xl m-6 border border-dashed border-white/15 bg-white/[0.15] p-4">
+          <p className="text-sm text-white/70">
+            Need to convert Word, PowerPoint, or images to PDF first?
+          </p>
+
+          <a
+            href="https://www.ilovepdf.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex text-sm font-semibold text-primary transition hover:text-primary/80"
+          >
+            Convert files to PDF →
+          </a>
+        </div>
 
         <FileList files={files} onRemove={removeFile} />
       </div>
