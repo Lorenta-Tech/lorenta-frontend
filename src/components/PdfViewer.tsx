@@ -45,25 +45,53 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
   }, [numPages]);
 
   return (
-    <div ref={containerRef} className="relative h-full w-full overflow-auto">
-      <div className="sticky top-3 z-10 ml-auto mr-3 w-max rounded-full bg-darkbg/85 px-3 py-1 text-sm font-bold text-white">
-        {currentPage} / {numPages}
+    <div className="relative h-full">
+
+      {/* Floating page indicator */}
+      <div className="pointer-events-none absolute right-4 top-4 z-[100]">
+        <div className="rounded-full border border-white/10 bg-black/80 px-4 py-1.5 text-lg font-semibold text-white shadow-lg backdrop-blur">
+          {currentPage} / {numPages}
+        </div>
       </div>
-      <div className="grid justify-items-center gap-4 py-4">
+
+      {/* Scrollable PDF area */}
+      <div
+        ref={containerRef}
+        className="h-full overflow-auto"
+      >
         <Document
           file={fileUrl}
-          onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-        >
-          {Array.from({ length: numPages }, (_, i) => (
-            <div
-              key={i}
-              ref={(el) => {pageRefs.current[i] = el;}}
-              data-page={i + 1}
-              className="max-w-full overflow-hidden rounded-xl bg-white/5 shadow-sm"
-            >
-              <Page pageNumber={i + 1} width={Math.max(260, width - 48)} />
+          onLoadSuccess={({ numPages }) =>
+            setNumPages(numPages)
+          }
+          loading={
+            <div className="py-10 text-center text-white/70">
+              Loading PDF...
             </div>
-          ))}
+          }
+        >
+          <div className="flex flex-col items-center gap-6 px-4 py-6">
+            {Array.from(
+              { length: numPages },
+              (_, i) => (
+                <div
+                  key={i}
+                  ref={(el) => {
+                    pageRefs.current[i] = el;
+                  }}
+                  data-page={i + 1}
+                  className="overflow-hidden rounded-2xl bg-white shadow-xl"
+                >
+                  <Page
+                    pageNumber={i + 1}
+                    width={Math.min(width - 32, 900)}
+                    renderTextLayer={false}
+                    renderAnnotationLayer={false}
+                  />
+                </div>
+              )
+            )}
+          </div>
         </Document>
       </div>
     </div>

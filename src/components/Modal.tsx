@@ -24,7 +24,7 @@ const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
       role="presentation"
     >
       <div
-        className="flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl"
+        className="flex h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-white/5 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({ title, onClose, children }) => {
           </button>
         </div>
 
-        <div className="min-h-80 flex-1 overflow-auto bg-white/5 p-4">
+        <div className="min-h-0 flex-1 overflow-hidden bg-white/5 p-4">
           {children}
         </div>
       </div>
