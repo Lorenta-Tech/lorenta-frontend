@@ -38,7 +38,7 @@ const DocumentConfigCard: React.FC<Props> = ({ config, file, onView }) => {
           value={
             Array.isArray(config.page_range) && config.page_range.length > 0
               ? config.page_range
-              : [`1-${file.pages}`]
+              : [file.pages===1?`1`:`1-${file.pages}`]
           }
           totalPages={file.pages}
           onChange={(val: string[]) => handleChange("page_range", val)}
