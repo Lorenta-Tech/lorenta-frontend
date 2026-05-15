@@ -17,6 +17,8 @@ const PageRangePicker: React.FC<Props> = ({
 
   const [input, setInput] = useState(
     Array.isArray(value) ? value.join(", ") : ""
+
+    
   );
   const [error, setError] = useState<string | null>(null);
 

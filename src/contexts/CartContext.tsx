@@ -64,7 +64,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           file,
           config: {
             file_id: file.id,
-            page_range: [`1-${file.pages}`],
+            page_range: [file.pages===1?`1`:`1-${file.pages}`],
             copies: 1,
             page_layout: 1,
             printing_mode: "monochromatic",
