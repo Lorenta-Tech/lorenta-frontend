@@ -56,7 +56,7 @@ const CopiesStepper: React.FC<Props> = ({
 
         <input
           type="number"
-          className="min-h-11 rounded-xl border border-white/15 bg-white/5 px-3 text-center transition focus:border-primary focus:ring-4 focus:ring-primary/20"
+          className="min-h-11 rounded-xl border border-white/15 bg-white/5 px-3 text-center transition focus:border-primary focus:ring-4 focus:ring-primary/20 [appearance:textfield]"
           value={inputValue}
           min={min}
           max={max}
