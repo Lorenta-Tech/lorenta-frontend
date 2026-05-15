@@ -24,6 +24,9 @@ const Checkout = () => {
   } = useCart();
 
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [loadingText, setLoadingText] =
+  useState("");
 
   const [error, setError] =
     useState<string | null>(null);
@@ -39,8 +42,11 @@ const Checkout = () => {
       setError(null);
 
       // =========================
-      // Upload files + create session
+      // Upload files
       // =========================
+      setLoadingText("Uploading files...");
+      setProgress(25);
+
       const uploadResponse = await uploadCart(items);
 
       const {
@@ -50,20 +56,34 @@ const Checkout = () => {
 
       setTotalAmount(total_amount);
 
+      setProgress(50);
+
       // =========================
       // Create Razorpay order
       // =========================
+      setLoadingText(
+        "Creating secure payment session..."
+      );
+
       const paymentOrder =
         await createRazorpayOrder({
           session_id,
           amount_paise: total_amount,
         });
 
+      setProgress(75);
+
       // =========================
       // Open payment gateway
       // =========================
+      setLoadingText(
+        "Redirecting to Razorpay..."
+      );
+
       const job =
         await openRazorpay(paymentOrder);
+
+      setProgress(100);
 
       clearCart();
 
@@ -134,21 +154,49 @@ const Checkout = () => {
           <Button
             onClick={handleCompleteOrder}
             disabled={loading}
-            className="w-full"
+            className="w-full disabled:cursor-not-allowed disabled:opacity-70"
           >
             {loading
-              ? "Processing Payment..."
-              : "Continue to Payment"}
+              ? "Processing..."
+              : `Continue wth payment`}
           </Button>
 
           {loading && (
-            <div className="flex flex-col items-center gap-3 py-2">
+            <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
 
-              <Loader size={18} />
+              <div className="flex items-center justify-between">
 
-              <p className="text-center text-sm text-white/60">
-                Redirecting you to Razorpay...
-              </p>
+                <p className="text-sm font-medium text-white">
+                  {loadingText}
+                </p>
+
+                <span className="text-xs text-white/60">
+                  {progress}%
+                </span>
+
+              </div>
+
+              {/* Progress Bar */}
+              <div className="mt-4 h-3 overflow-hidden rounded-full bg-white/10">
+
+                <div
+                  className="h-full rounded-full bg-[#f2cb07] transition-all duration-500 ease-out"
+                  style={{
+                    width: `${progress}%`,
+                  }}
+                />
+
+              </div>
+
+              <div className="mt-4 flex items-center gap-3">
+
+                <Loader size={16} />
+
+                <p className="text-xs text-white/50">
+                  Please do not refresh or close this page.
+                </p>
+
+              </div>
 
             </div>
           )}
