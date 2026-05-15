@@ -41,13 +41,24 @@ const PageRangePicker: React.FC<Props> = ({
 
       if (part.includes("-")) {
         const [s, e] = part.split("-").map(Number);
-        if (s > e) return `Invalid range: ${part}`;
-        if (s < 1 || e > totalPages)
+
+        if (s === e) {
+          return `Range cannot be applied for single page: ${part}`;
+        }
+
+        if (s > e) {
+          return `Invalid range: ${part}`;
+        }
+
+        if (s < 1 || e > totalPages) {
           return `Out of bounds: ${part}`;
+        }
       } else {
         const n = Number(part);
-        if (n < 1 || n > totalPages)
+
+        if (n < 1 || n > totalPages) {
           return `Out of bounds: ${part}`;
+        }
       }
     }
 
