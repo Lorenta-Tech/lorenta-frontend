@@ -67,7 +67,7 @@ const DocumentConfigCard: React.FC<Props> = ({ config, file, onView }) => {
       />
 
       <PPScomponent
-        label="Pages per Sheet"
+        label="Pages per Side"
         perSheet={config.page_layout}
         onChange={(val: number) =>
           handleChange("page_layout", val)

@@ -15,16 +15,10 @@ const PageRangePicker: React.FC<Props> = ({
   const safeValue = Array.isArray(value) ? value : [];
   const [mode, setMode] = useState<"all" | "custom">("all");
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(
+    Array.isArray(value) ? value.join(", ") : ""
+  );
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (safeValue.length === 0) {
-      setInput("");
-      return;
-    }
-    setInput(safeValue.join(", "));
-  }, [safeValue]);
 
   useEffect(() => {
     const isAll =
