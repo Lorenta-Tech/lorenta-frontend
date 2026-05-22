@@ -4,7 +4,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { FaUserAlt } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import Logo from "../assets/Lorenta.png";
+import Logo from "../assets/Lorenta.png"
 
 export default function Navbar() {
 
