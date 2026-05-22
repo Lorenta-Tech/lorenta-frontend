@@ -4,6 +4,7 @@ import { TiShoppingCart } from "react-icons/ti";
 import { FaUserAlt } from "react-icons/fa";
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Logo from "../assets/Lorenta.png";
 
 export default function Navbar() {
 
@@ -55,10 +56,10 @@ export default function Navbar() {
           className="flex items-center gap-2"
         >
           <img
-            src="/src/assets/Lorenta.png"
-            alt="PrintPoint Logo"
-            className="h-8 w-8 object-contain"
-          />
+  src={Logo}
+  alt="PrintPoint Logo"
+  className="h-8 w-8 object-contain"
+/>
           <span className="text-xl font-extrabold text-white">
             Print<span className="text-primary">Point</span>
           </span>
