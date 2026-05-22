@@ -26,7 +26,7 @@ function History() {
 
         console.error(err);
 
-        setError("Failed to load orders");
+        setError("Failed to load history. Please try again later.");
 
       } finally {
 
@@ -67,7 +67,7 @@ function History() {
   if (orders.length === 0) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
-        No active print jobs found
+        No history found
       </div>
     );
   }
@@ -78,7 +78,7 @@ function History() {
       <div className="mx-auto max-w-4xl">
 
         <h1 className="mb-8 text-4xl font-extrabold text-white">
-          Order History
+          My History
         </h1>
 
         <ul className="flex flex-col gap-7">

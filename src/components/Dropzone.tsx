@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { FiUploadCloud } from "react-icons/fi";
 
 type Props = {
   onFiles: (files: FileList | null) => void;
@@ -41,13 +42,29 @@ const Dropzone: React.FC<Props> = ({
         }
       }}
     >
-      <p className="text-lg font-bold text-white">Drag and drop files here</p>
+      {/* Upload Icon */}
+      <div className={`rounded-2xl p-4 transition duration-200 ${dragActive ? "bg-primary/20" : "bg-white/10"}`}>
+        <FiUploadCloud
+          size={40}
+          className={`transition duration-200 ${dragActive ? "text-primary" : "text-white/60"}`}
+        />
+      </div>
 
-      <p>
-        or <span className="font-bold text-primary">select files</span>
+      <p className="text-lg font-bold text-white">
+        Drag and drop your PDF here
       </p>
-      <p className="text-sm text-white/70">Only PDFs are supported</p>
-      
+
+      <p className="text-white/70">
+        or <span className="font-bold text-primary">browse to upload</span>
+      </p>
+
+      {/* PDF only notice */}
+      <div className="mt-1 flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2">
+        <span className="text-xs font-bold tracking-widest text-red-400 uppercase">PDF only</span>
+        <span className="text-white/40">·</span>
+        <span className="text-xs text-white/50">No images, Word docs, or other formats accepted</span>
+      </div>
+
       <input
         type="file"
         multiple
@@ -57,7 +74,7 @@ const Dropzone: React.FC<Props> = ({
           const files = e.target.files;
           if (!files || files.length === 0) return;
           onFiles(e.target.files);
-          e.target.value="";
+          e.target.value = "";
         }}
         className="sr-only"
       />

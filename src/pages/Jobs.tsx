@@ -17,7 +17,7 @@ function Jobs() {
         setJobs(json?.data?.jobs || []);
       } catch (err) {
         console.error(err);
-        setError("Failed to load active orders");
+        setError("Failed to load active orders. Please try again later.");
       } finally {
         setLoading(false);
       }

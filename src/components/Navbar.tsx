@@ -52,9 +52,16 @@ export default function Navbar() {
         {/* Logo */}
         <Link
           to="/"
-          className="text-xl font-extrabold text-white"
+          className="flex items-center gap-2"
         >
-          Lorenta<span className="text-primary">.</span>
+          <img
+            src="/src/assets/Lorenta.png"
+            alt="PrintPoint Logo"
+            className="h-8 w-8 object-contain"
+          />
+          <span className="text-xl font-extrabold text-white">
+            Print<span className="text-primary">Point</span>
+          </span>
         </Link>
 
         <div className="flex items-center gap-2">
