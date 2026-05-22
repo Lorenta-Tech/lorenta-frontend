@@ -39,9 +39,6 @@ function History() {
 
   }, []);
 
-  // =========================
-  // Loading State
-  // =========================
   if (loading) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
@@ -50,9 +47,6 @@ function History() {
     );
   }
 
-  // =========================
-  // Error State
-  // =========================
   if (error) {
     return (
       <div className="mt-20 text-center text-lg text-cta">
@@ -61,13 +55,10 @@ function History() {
     );
   }
 
-  // =========================
-  // Empty State
-  // =========================
   if (orders.length === 0) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
-        No history found
+        No history found.
       </div>
     );
   }
