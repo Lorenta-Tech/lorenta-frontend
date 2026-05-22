@@ -67,7 +67,7 @@ function History() {
   if (orders.length === 0) {
     return (
       <div className="mt-20 text-center text-lg text-white/70">
-        No history found
+        No history found.
       </div>
     );
   }
