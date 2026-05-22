@@ -13,7 +13,6 @@ import ErrorBoundary from './components/ErrorBoundary.tsx';
 import ProtectedRoute from "./components/ProtectedRoute";
 import PublicRoute from "./components/PublicRoute";
 import Logout from './pages/Logout.tsx';
-import Footer from './components/Footer.tsx';
 import { CartProvider } from './contexts/CartContext.tsx';
 import { AlertProvider } from './contexts/AlertContext.tsx';
 import AlertContainer from './components/AlertContainer.tsx';
@@ -32,7 +31,6 @@ function App() {
             <main className="mx-auto w-full max-w-7xl flex-1 overflow-x-hidden px-4 py-8 md:px-6 md:py-10">
               <Outlet />
             </main>
-            <Footer />
           </CartProvider>
         </AlertProvider>
       ),

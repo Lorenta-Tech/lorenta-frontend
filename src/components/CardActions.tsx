@@ -5,7 +5,6 @@ type CardActionsProps = {
 
 const CardActions: React.FC<CardActionsProps> = ({
   onView,
-  onApplyToAll,
 }) => {
   return (
     <div className="flex min-w-0 flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center sm:justify-between">
@@ -17,13 +16,7 @@ const CardActions: React.FC<CardActionsProps> = ({
         View
       </button>
 
-      <button
-        type="button"
-        onClick={onApplyToAll}
-        className="min-h-10 w-full rounded-xl bg-cta px-4 py-2 text-sm font-semibold text-darkbg transition hover:bg-cta/90 sm:w-auto"
-      >
-        Apply to all
-      </button>
+
     </div>
   );
 };
