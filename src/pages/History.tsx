@@ -112,9 +112,7 @@ function History() {
           })}
 
         </ul>
-
       </div>
-
     </div>
   );
 }

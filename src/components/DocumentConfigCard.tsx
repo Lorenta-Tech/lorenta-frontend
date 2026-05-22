@@ -92,7 +92,6 @@ import PageRangePicker from "./PageRangePicker";
 import CopiesStepper from "./CopiesStepper";
 import PPScomponent from "./PPScomponent";
 import { useCart } from "../contexts/CartContext";
-import { FaPrint } from "react-icons/fa";
 import { IoColorPaletteOutline } from "react-icons/io5";
 import { TbLayoutRows } from "react-icons/tb";
 import { BsFileEarmarkText } from "react-icons/bs";
