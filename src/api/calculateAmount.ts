@@ -13,8 +13,8 @@ type CalculateInput = {
 };
 
 const rates: Record<string, number> = {
-  monochromatic: 2,
-  color: 7,
+  monochromatic: 1,
+  color: 5,
 };
 
 const rateFor = (printingMode: string) => {
