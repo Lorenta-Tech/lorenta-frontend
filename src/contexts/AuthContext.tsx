@@ -39,16 +39,18 @@ export function AuthProvider({
   }, []);
 
   const login = (token: string) => {
+    // Remove any department session
+    localStorage.removeItem("departmentToken");
+    localStorage.removeItem("departmentUser");
 
     localStorage.setItem("token", token);
-
     setUser({ token });
   };
 
   const logout = () => {
-
     localStorage.removeItem("token");
-
+    localStorage.removeItem("departmentToken");
+    localStorage.removeItem("departmentUser");
     setUser(null);
   };
 
