@@ -5,6 +5,7 @@ import App from './App.tsx'
 
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
+import { DepartmentAuthProvider } from './contexts/DeptAuthContext.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -14,9 +15,9 @@ createRoot(document.getElementById('root')!).render(
     >
 
       <AuthProvider>
-
-        <App />
-
+        <DepartmentAuthProvider>
+          <App />
+        </DepartmentAuthProvider>
       </AuthProvider>
 
     </GoogleOAuthProvider>

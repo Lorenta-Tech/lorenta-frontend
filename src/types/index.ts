@@ -44,3 +44,25 @@ export interface UserInfo {
   email: string;
   avatar: string;
 }
+
+export interface Semester {
+  id: string;
+  semesterNo: number;
+}
+
+export interface Subject {
+  id: string;
+  name: string;
+}
+
+export interface PdfFile {
+  id: string;
+  fileName: string;
+  url: string;
+}
+
+export interface Module {
+  id: string;
+  name: string;
+  pdfs: PdfFile[];
+}
