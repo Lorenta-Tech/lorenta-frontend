@@ -5,8 +5,8 @@ export interface Subject {
 }
 
 export const mockGetSubjects = async (
-  departmentId: string,
-  semesterId: string
+  _departmentId: string,
+  _semesterId: string
 ) => {
   await new Promise((resolve) =>
     setTimeout(resolve, 500)

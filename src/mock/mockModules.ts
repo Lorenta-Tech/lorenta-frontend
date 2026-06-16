@@ -12,7 +12,7 @@ export interface Module {
 }
 
 export const mockGetModules = async (
-  subjectId: string
+  _subjectId: string
 ) => {
   await new Promise((resolve) =>
     setTimeout(resolve, 500)
