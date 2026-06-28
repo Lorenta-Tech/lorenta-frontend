@@ -3,6 +3,7 @@
   import { Link } from "react-router-dom";
   import { mockDepartmentLogin } from "../../mock/mockLogin";
   import { useDepartmentAuth } from "../../contexts/DeptAuthContext";
+  // import apiFetch from "../../api/api";
 
   export default function DeptLogin() {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@
         setLoading(true);
         
         // const data = await apiFetch<any>(
-        //   import.meta.env.VITE_API_BASE_URL+"/department-admin/login", 
+        //   "/department-admin/login", 
         //   {
         //     method: "POST",
         //     auth: false,

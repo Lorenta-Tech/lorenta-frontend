@@ -1,3 +1,8 @@
+export interface Semester {
+  id: string;
+  semester_number: number;
+}
+
 export const mockGetSemesters = async (
   departmentId: string
 ) => {
@@ -5,51 +10,49 @@ export const mockGetSemesters = async (
     setTimeout(resolve, 500)
   );
 
-  if (departmentId === "cse-uuid") {
+  if (departmentId === "11111111-1111-1111-1111-111111111111") {
     return {
-      semesters: [
+      data: [
         {
-          id: "sem-1-uuid",
+          id: "sem-uuid-1",
           semester_number: 1,
         },
         {
-          id: "sem-2-uuid",
+          id: "sem-uuid-2",
           semester_number: 2,
         },
         {
-          id: "sem-3-uuid",
+          id: "sem-uuid-3",
           semester_number: 3,
         },
         {
-          id: "sem-4-uuid",
+          id: "sem-uuid-4",
           semester_number: 4,
         },
         {
-          id: "sem-5-uuid",
+          id: "sem-uuid-5",
           semester_number: 5,
         },
         {
-          id: "sem-6-uuid",
+          id: "sem-uuid-6",
           semester_number: 6,
         },
         {
-          id: "sem-7-uuid",
+          id: "sem-uuid-7",
           semester_number: 7,
         },
         {
-          id: "sem-8-uuid",
+          id: "sem-uuid-8",
           semester_number: 8,
         },
       ],
     };
   }
 
-  const error = {
+  throw {
     status: 401,
     code: "INVALID_DEPARTMENT",
     message:
-      "Invalid DEPARTMENT ID",
+      "Invalid Department ID",
   };
-
-  throw error;
 };
