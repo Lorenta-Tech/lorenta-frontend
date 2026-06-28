@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDepartmentAuth } from "../../contexts/DeptAuthContext";
-import { mockGetSemesters } from "../../mock/mockSemesters";
+import { Semester, mockGetSemesters } from "../../mock/mockSemesters";
 // import apiFetch from "../../api/api";
 
-interface Semester {
+export interface Subject {
   id: string;
-  semester_number: number;
+  name: string;
+  code: string;
 }
 
 export default function SemesterPage() {
   const navigate = useNavigate();
 
-  const { departmentUser } = useDepartmentAuth();
+  const { departmentId } =
+    useDepartmentAuth();
 
   const [loading, setLoading] =
     useState(true);
@@ -21,28 +23,29 @@ export default function SemesterPage() {
     useState<Semester[]>([]);
 
   useEffect(() => {
+    if (!departmentId) {
+      setLoading(false);
+      return;
+    }
+
     const fetchSemesters =
       async () => {
         try {
-          if (!departmentUser) {
-            return;
-          }
-
-          // const response = await apiFetch<{semesters: Semester[]}>(
-          //   `/notes/departments/${departmentUser}/semesters`,
+          // REAL API
+          // const response = await apiFetch(
+          //   `/notes/branches/${departmentId}/semesters`,
           //   {
           //     method: "GET",
           //   }
           // );
 
+          // MOCK API
           const response =
             await mockGetSemesters(
-              departmentUser
+              departmentId
             );
 
-          setSemesters(
-            response.semesters
-          );
+          setSemesters(response.data);
         } catch (error) {
           console.error(error);
         } finally {
@@ -51,7 +54,7 @@ export default function SemesterPage() {
       };
 
     fetchSemesters();
-  }, [departmentUser]);
+  }, [departmentId]);
 
   const openSemester = (
     semesterId: string
@@ -82,35 +85,41 @@ export default function SemesterPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {semesters.map(
-          (semester) => (
-            <button
-              key={semester.id}
-              onClick={() =>
-                openSemester(
-                  semester.id
-                )
-              }
-              className="group rounded-2xl border border-white/15 bg-white/5 p-6 text-left backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-white/25 hover:bg-white/10"
-            >
-              <div className="text-sm font-medium text-white/50">
-                Semester
-              </div>
-
-              <div className="mt-2 text-3xl font-bold text-white">
-                {
-                  semester.semester_number
+      {semesters.length === 0 ? (
+        <div className="rounded-xl border border-white/10 p-6 text-white/60">
+          No semesters found.
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {semesters.map(
+            (semester) => (
+              <button
+                key={semester.id}
+                onClick={() =>
+                  openSemester(
+                    semester.id
+                  )
                 }
-              </div>
+                className="group rounded-2xl border border-white/15 bg-white/5 p-6 text-left backdrop-blur-sm transition-all duration-200 hover:-translate-y-1 hover:border-white/25 hover:bg-white/10"
+              >
+                <div className="text-sm font-medium text-white/50">
+                  Semester
+                </div>
 
-              <div className="mt-4 text-sm text-white/60 transition group-hover:text-white/90">
-                View Subjects →
-              </div>
-            </button>
-          )
-        )}
-      </div>
+                <div className="mt-2 text-3xl font-bold text-white">
+                  {
+                    semester.semester_number
+                  }
+                </div>
+
+                <div className="mt-4 text-sm text-white/60 transition group-hover:text-white/90">
+                  View Subjects →
+                </div>
+              </button>
+            )
+          )}
+        </div>
+      )}
     </div>
   );
 }
