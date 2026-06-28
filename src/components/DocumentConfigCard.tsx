@@ -96,6 +96,7 @@ import { IoColorPaletteOutline } from "react-icons/io5";
 import { TbLayoutRows } from "react-icons/tb";
 import { BsFileEarmarkText } from "react-icons/bs";
 import { MdContentCopy } from "react-icons/md";
+import { countSelectedPages } from "../utils/pageUtils";
 
 interface Props {
   config: DocumentConfig;
@@ -159,10 +160,16 @@ const DocumentConfigCard: React.FC<Props> = ({ config, file, onView }) => {
               value={
                 Array.isArray(config.page_range) && config.page_range.length > 0
                   ? config.page_range
-                  : [file.pages === 1 ? `1` : `1-${file.pages}`]
+                  : [file.pages === 1 ? "1" : `1-${file.pages}`]
               }
               totalPages={file.pages}
-              onChange={(val: string[]) => handleChange("page_range", val)}
+              onChange={(val) =>
+                updateConfig({
+                  ...config,
+                  page_range: val,
+                  num_of_pages: countSelectedPages(val, file.pages),
+                })
+              }
             />
           </div>
         )}

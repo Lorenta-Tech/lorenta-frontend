@@ -21,65 +21,13 @@ const rateFor = (printingMode: string) => {
   return rates[printingMode] ?? rates.monochromatic;
 };
 
-const countSelectedPages = (
-  pageRanges: string[],
-  maxPages: number
-): number => {
-  const selected = new Set<number>();
-
-  for (const range of pageRanges) {
-    const trimmed = range.trim();
-
-    // range like 1-5
-    if (trimmed.includes("-")) {
-      const parts = trimmed.split("-");
-
-      if (parts.length !== 2) continue;
-
-      let start = Number(parts[0].trim());
-      let end = Number(parts[1].trim());
-
-      if (Number.isNaN(start) || Number.isNaN(end)) {
-        continue;
-      }
-
-      if (start > end) {
-        [start, end] = [end, start];
-      }
-
-      for (let i = start; i <= end; i++) {
-        if (i >= 1 && i <= maxPages) {
-          selected.add(i);
-        }
-      }
-    } else {
-      // single page like 5
-      const page = Number(trimmed);
-
-      if (
-        !Number.isNaN(page) &&
-        page >= 1 &&
-        page <= maxPages
-      ) {
-        selected.add(page);
-      }
-    }
-  }
-
-  return selected.size;
-};
-
 export const calculateAmount = async ({
   items,
 }: CalculateInput): Promise<number> => {
 
   let total = 0;
 
-  for (const { file, config } of items) {
-
-    const numOfPages =
-      file.pages ??
-      Math.floor(Math.random() * 10) + 1;
+  for (const { config } of items) {
 
     const copies = config.copies || 1;
 
@@ -92,13 +40,7 @@ export const calculateAmount = async ({
     const printingSide =
       config.printing_side;
 
-    const selectedPages = countSelectedPages(
-      config.page_range || [],
-      numOfPages
-    );
-
-    const finalSelectedPages =
-      selectedPages || numOfPages;
+    const finalSelectedPages = config.num_of_pages;
 
     const pagesPerSheet =
       printingSide === "double_side"
