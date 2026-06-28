@@ -100,7 +100,7 @@ import ViewModal from "../components/ViewModal";
 import Button from "../components/Button";
 import { UploadedFile } from "../types";
 import { useCart } from "../contexts/CartContext";
-import { calculateAmount } from "../api/calculateAmount";
+import { calculateAmount } from "../utils/calculateAmount";
 
 function Cart() {
   const { items, totalAmount, setTotalAmount } = useCart();

@@ -81,6 +81,7 @@ const PageRangePicker: React.FC<Props> = ({
     setMode("all");
     setError("");
     setInput(allRange);
+
     onChange([allRange]);
   };
 
