@@ -76,7 +76,7 @@ function Login() {
                 />
               </div>
 
-              <div className="flex w-full items-center gap-3">
+              {/* <div className="flex w-full items-center gap-3">
                 <div className="h-px flex-1 bg-white/20" />
                 <span className="text-xs text-white/50">
                   OR
@@ -89,7 +89,7 @@ function Login() {
                 className="w-full rounded-lg border border-white/20 px-4 py-3 text-center text-sm font-medium text-white transition hover:bg-white/10"
               >
                 Department Admin Login
-              </Link>
+              </Link> */}
 
               <Link
                 to="/"
