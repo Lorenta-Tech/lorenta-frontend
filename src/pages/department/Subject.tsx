@@ -23,14 +23,14 @@ export default function SubjectPage() {
   const { semesterId } =
     useParams();
 
-  const { departmentUser } =
+  const { departmentId } =
     useDepartmentAuth();
 
   const [loading, setLoading] =
     useState(true);
 
   const [subjects, setSubjects] =
-    useState<Subject[]>([]);
+    useState<any[]>([]);
 
   const [subjectName, setSubjectName] =
     useState("");
@@ -43,38 +43,34 @@ export default function SubjectPage() {
       async () => {
         try {
           if (
-            !departmentUser ||
+            !departmentId ||
             !semesterId
           ) {
             return;
           }
 
-          /*
-          const response =
-            await apiFetch<{
-              subjects: Subject[];
-            }>(
-              "/notes/subjects",
-              {
-                method: "POST",
-                body: JSON.stringify({
-                  department_id:
-                    departmentUser,
-                  semester_id:
-                    semesterId,
-                }),
-              }
-            );
-          */
+          // const response =
+          //   await apiFetch(
+          //     "/notes/subjects",
+          //     {
+          //       method: "POST",
+          //       body: JSON.stringify({
+          //         department_id:
+          //           departmentId,
+          //         semester_id:
+          //           semesterId,
+          //       }),
+          //     }
+          //   );
 
           const response =
             await mockGetSubjects(
-              departmentUser,
+              departmentId,
               semesterId
             );
 
           setSubjects(
-            response.subjects
+            response.data
           );
         } catch (error) {
           console.error(error);
@@ -85,7 +81,7 @@ export default function SubjectPage() {
 
     fetchSubjects();
   }, [
-    departmentUser,
+    departmentId,
     semesterId,
   ]);
 

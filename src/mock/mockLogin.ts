@@ -11,7 +11,7 @@ export const mockDepartmentLogin = async (
   if (username === "cse" && password === "12345678") {
     return {
       access_token: "jwt-token",
-      department_id: "cse-uuid",
+      department_id: "11111111-1111-1111-1111-111111111111",
       expires_in: 3600
     };
   }

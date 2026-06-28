@@ -2,13 +2,13 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
 } from "react";
 
-
 interface DepartmentAuthContextType {
-  departmentUser: string | null;
+  departmentId: string | null;
   login: (
-    user: string,
+    departmentId: string,
     token: string
   ) => void;
   logout: () => void;
@@ -18,6 +18,11 @@ const DepartmentAuthContext =
   createContext<DepartmentAuthContextType | null>(
     null
   );
+
+const TOKEN_KEY = "departmentToken";
+const ID_KEY = "departmentId";
+const LOGIN_DATE_KEY = "departmentLoginDate";
+const EXPIRY_DAYS = 29;
 
 export const useDepartmentAuth = () => {
   const context = useContext(
@@ -38,32 +43,81 @@ export function DepartmentAuthProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [departmentUser, setDepartmentUser] =
-    useState<string | null>(() => {
-      return localStorage.getItem("departmentUser");
-    });
+  const [departmentId, setDepartmentId] =
+    useState<string | null>(null);
 
-  const login = (user: string, token: string) => {
-    // Remove any regular user session
-    localStorage.removeItem("token");
+  const clearAuth = () => {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(ID_KEY);
+    localStorage.removeItem(LOGIN_DATE_KEY);
 
-    localStorage.setItem("departmentToken", token);
-    localStorage.setItem("departmentUser", user);
-
-    setDepartmentUser(user);
+    setDepartmentId(null);
   };
 
-  const logout = () => {
-    localStorage.removeItem("departmentToken");
-    localStorage.removeItem("departmentUser");
+  useEffect(() => {
+    const token =
+      localStorage.getItem(TOKEN_KEY);
+
+    const departmentId =
+      localStorage.getItem(ID_KEY);
+
+    const loginDate =
+      localStorage.getItem(LOGIN_DATE_KEY);
+
+    if (!token || !departmentId) {
+      clearAuth();
+      return;
+    }
+
+    if (!loginDate) {
+      clearAuth();
+      return;
+    }
+
+    const login = new Date(loginDate);
+
+    if (Number.isNaN(login.getTime())) {
+      clearAuth();
+      return;
+    }
+
+    const diffInDays = Math.floor(
+      (Date.now() - login.getTime()) /
+        (1000 * 60 * 60 * 24)
+    );
+
+    if (diffInDays >= EXPIRY_DAYS) {
+      clearAuth();
+      return;
+    }
+
+    setDepartmentId(departmentId);
+  }, []);
+
+  const login = (
+    departmentId: string,
+    token: string
+  ) => {
     localStorage.removeItem("token");
-    setDepartmentUser(null);
+    localStorage.removeItem("loginDate");
+
+    localStorage.setItem(TOKEN_KEY, token);
+    localStorage.setItem(ID_KEY, departmentId);
+
+    localStorage.setItem(
+      LOGIN_DATE_KEY,
+      new Date().toISOString()
+    );
+
+    setDepartmentId(departmentId);
   };
+
+  const logout = () => clearAuth();
 
   return (
     <DepartmentAuthContext.Provider
       value={{
-        departmentUser,
+        departmentId,
         login,
         logout,
       }}

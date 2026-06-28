@@ -13,28 +13,12 @@ export const mockGetSubjects = async (
   );
 
   return {
-    subjects: [
-      {
-        id: "dbms-uuid",
-        name:
-          "Database Management System",
-        code: "21CS53",
-      },
-      {
-        id: "cn-uuid",
-        name: "Computer Networks",
-        code: "21CS54",
-      },
-      {
-        id: "os-uuid",
-        name: "Operating Systems",
-        code: "21CS55",
-      },
-      {
-        id: "se-uuid",
-        name: "Software Engineering",
-        code: "21CS56",
-      },
-    ],
+	  "data": [
+      { "id": "subj-uuid-1", "name": "Operating Systems", "subject_code": "CS301"
+  },
+      { "id": "subj-uuid-2", "name": "Data Structures", "subject_code": "CS302"
+  },
+      { "id": "subj-uuid-3", "name": "Computer Networks", "subject_code": "CS303" }
+    ]
   };
 };

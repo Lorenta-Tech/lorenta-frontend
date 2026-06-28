@@ -19,10 +19,10 @@ export default function Navbar({
   const navigate = useNavigate();
 
   const { user } = useAuth();
-  const { departmentUser } = useDepartmentAuth();
+  const { departmentId } = useDepartmentAuth();
 
   const regularLoggedIn = !!user;
-  const departmentLoggedIn = !!departmentUser;
+  const departmentLoggedIn = !!departmentId;
 
   const logoDestination = departmentLoggedIn
     ? "/department/semesters"
@@ -248,7 +248,7 @@ export default function Navbar({
             <div className="md:hidden">
               <Link
                 to="/logout"
-                className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+                className="rounded-xl px-3 py-2 text-lg font-semibold text-cta transition hover:bg-cta/10"
               >
                 Logout
               </Link>

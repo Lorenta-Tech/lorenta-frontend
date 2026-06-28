@@ -5,9 +5,9 @@ import Home from "./Home";
 
 export default function LandingPage() {
   const { user } = useAuth();
-  const { departmentUser } = useDepartmentAuth();
+  const { departmentId } = useDepartmentAuth();
 
-  if (departmentUser) {
+  if (departmentId) {
     return (
       <Navigate
         to="/department/semesters"
