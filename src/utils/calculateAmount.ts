@@ -27,11 +27,7 @@ export const calculateAmount = async ({
 
   let total = 0;
 
-  for (const { file, config } of items) {
-
-    const numOfPages =
-      file.pages ??
-      Math.floor(Math.random() * 10) + 1;
+  for (const { config } of items) {
 
     const copies = config.copies || 1;
 
@@ -45,7 +41,7 @@ export const calculateAmount = async ({
       config.printing_side;
 
     const finalSelectedPages = config.num_of_pages;
-    
+
     const pagesPerSheet =
       printingSide === "double_side"
         ? pageLayout * 2
