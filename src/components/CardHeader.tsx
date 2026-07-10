@@ -8,7 +8,7 @@ type CardHeaderProps = {
 const CardHeader: React.FC<CardHeaderProps> = ({ title, onRemove }) => {
   return (
     <div className="flex min-w-0 items-center justify-between gap-3">
-      <h3 className="min-w-0 truncate text-base font-bold text-white">{title}</h3>
+      <h3 className="min-w-0 truncate text-base font-bold text-white">{title.length > 20 ? `${title.slice(0, 20)}…` : title}</h3>
       <button
         type="button"
         onClick={onRemove}
