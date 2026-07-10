@@ -41,9 +41,8 @@ const Checkout = () => {
 
       setError(null);
 
-      // =========================
       // Upload files
-      // =========================
+
       setLoadingText("Uploading files...");
       setProgress(25);
 
@@ -98,7 +97,7 @@ const Checkout = () => {
       if (err?.message === "Payment cancelled") {
 
         setError(
-          "Payment was cancelled. Please try again."
+          "Payment was cancelled. Retry or relogin to proceed."
         );
 
         return;
